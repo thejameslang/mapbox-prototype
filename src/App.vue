@@ -11,15 +11,16 @@
 import Mapbox from "mapbox-gl-vue";
 import axios from "axios";
 export const HTTP = axios.create({
-  baseURL: 'http://ecs-first-run-alb-1190988938.us-east-2.elb.amazonaws.com/dealgeolocation',
+  baseURL:
+    "http://ecs-first-run-alb-1190988938.us-east-2.elb.amazonaws.com/dealgeolocation",
   headers: {
-	  'Access-Control-Allow-Origin': '*',
-	},
+    "Access-Control-Allow-Origin": "*"
+  },
   auth: {
-    username: 'adminUser',
-    password: 'adminPass2018'
+    username: "adminUser",
+    password: "adminPass2018"
   }
-})
+});
 export default {
   name: "app",
   components: { Mapbox },
@@ -45,18 +46,18 @@ export default {
       },
       places: [],
       errors: []
-    }
+    };
   },
   created() {
-    HTTP.get('posts')
-    .then(response => {
-      this.places = response.data
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
+    HTTP.get("posts")
+      .then(response => {
+        this.places = response.data;
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
   }
-}
+};
 </script>
 
 <style lang="scss">
