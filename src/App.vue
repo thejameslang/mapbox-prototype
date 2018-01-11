@@ -32,14 +32,14 @@ export default {
           zoom: 10
         }
       },
-      posts: [],
+      places: [],
       errors: []
     }
   },
   created() {
     HTTP.get('posts')
     .then(response => {
-      this.posts = response.data
+      this.places = response.data
     })
     .catch(e => {
       this.errors.push(e)
