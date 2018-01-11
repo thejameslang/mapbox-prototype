@@ -13,9 +13,6 @@ import axios from "axios";
 export const HTTP = axios.create({
   baseURL:
     "http://ecs-first-run-alb-1190988938.us-east-2.elb.amazonaws.com/dealgeolocation",
-  headers: {
-    "Access-Control-Allow-Origin": "*"
-  },
   auth: {
     username: "adminUser",
     password: "adminPass2018"
