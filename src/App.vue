@@ -64,6 +64,9 @@ export default {
     top: 0;
     bottom: 0;
     width: 100%;
+    .mapboxgl-ctrl-logo {
+      display: none;
+    }
   }
 }
 </style>
