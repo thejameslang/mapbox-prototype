@@ -44,7 +44,7 @@ export default {
           zoom: 10
         }
       },
-      places: [],
+      places: {},
       errors: []
     };
   },
