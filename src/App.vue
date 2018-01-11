@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <mapbox v-bind="mapObject"></mapbox>
+    <mapbox v-bind="mapObject"
+            @map-init="mapInitialized"
+            >
+    </mapbox>
   </div>
 </template>
 
@@ -20,6 +23,14 @@ export const HTTP = axios.create({
 export default {
   name: "app",
   components: { Mapbox },
+  methods: {
+    mapInitialized(map) {
+      const Geocoder = new MapboxGeocoder({
+        accessToken: this.mapObject.accessToken
+      });
+      map.addControl(Geocoder);
+    }
+  },
   data() {
     return {
       mapObject: {
