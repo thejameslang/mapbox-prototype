@@ -53,7 +53,8 @@ export default {
             break;
         }
         for (var y = 2000; y < 2018; y++) {
-          if (marker.properties["dayOfClosing"].includes(y.toString())) {
+          // if (marker.properties["dayOfClosing"].includes(y.toString())) {
+          if (marker.properties["dayOfClosing"].substring(0,4) == y.toString()) {
             el.className += " year" + y;
           }
         }
