@@ -8,6 +8,7 @@
     <div id="time-travel">
       <h3>Current Year: {{timeTravelYear}}</h3>
       <input type="range" min="2003" max="2017" step="1" v-model="timeTravelYear">
+      <button v-on:click="playPause = !playPause"><span v-if="!playPause">Play</span><span v-if="playPause">Pause</span></button>
     </div>
     <div class="legend">
       <h6><div class="marker lob-dsf show-year"></div>DSF</h6>
@@ -92,7 +93,8 @@ export default {
         features: []
       },
       timeTravelYear: 2003,
-      errors: []
+      errors: [],
+      playPause: false
     };
   },
   created() {
@@ -116,12 +118,36 @@ export default {
       console.log("for");
     }
   },
+  updated() {
+    if (this.playPause) {
+      setTimeout(() => {
+        if (this.timeTravelYear === 2017) {
+          this.timeTravelYear = 2003;
+        } else {
+          this.timeTravelYear = this.timeTravelYear + 1;
+        }
+      }, 500);
+    }
+  },
   watch: {
     timeTravelYear: function(val, oldVal) {
       var elementsToHide = document.getElementsByClassName("year" + oldVal);
-      for (var i in elementsToHide) {
-        if (elementsToHide.hasOwnProperty(i)) {
-          elementsToHide[i].classList.remove("show-year");
+      if (!this.playPause) {
+        console.log('clearing last year');
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.remove("show-year");
+          }
+        }
+      } else {
+        if (oldVal === 2017) {
+          console.log('clearing all');
+          elementsToHide = document.getElementsByClassName("marker");
+          for (var i in elementsToHide) {
+            if (elementsToHide.hasOwnProperty(i)) {
+              elementsToHide[i].classList.remove("show-year");
+            }
+          }
         }
       }
       var elementsToShow = document.getElementsByClassName("year" + val);
@@ -136,6 +162,16 @@ export default {
       //   if (timeTravelYear == i) {
       //     document.getElementsByClassName("year" + i).style.display = "block";
       //     console.log('changing year ' + i);
+      //   }
+      // }
+    },
+    playPause: function(val, oldVal) {
+      // console.log("playPause");
+      // while (val === true) {
+      //   if (this.timeTravelYear === 2017) {
+      //     this.timeTravelYear = 2003;
+      //   } else {
+      //     this.timeTravelYear++;
       //   }
       // }
     }
@@ -156,35 +192,35 @@ export default {
     }
   }
   .marker {
-      opacity: 0;
-      border: none;
-      cursor: pointer;
-      height: 15px;
-      width: 15px;
-      border-radius: 50%;
-      // background-image: url(./assets/marker.png);
-      // background-size: 100% 100%;
-      // background-color: rgba(0, 0, 0, 0);
-      transition: opacity 1s;
-      &.lob-dsf {
-        background-color: #00a657;
-      }
-      &.lob-property-sales {
-        background-color: #af3cf1;
-      }
-      &.lob-asset-services {
-        background-color: #00b2dd;
-      }
+    opacity: 0;
+    border: none;
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    // background-image: url(./assets/marker.png);
+    // background-size: 100% 100%;
+    // background-color: rgba(0, 0, 0, 0);
+    transition: opacity 1s;
+    &.lob-dsf {
+      background-color: #00a657;
     }
-    .show-year {
-      opacity: 1;
+    &.lob-property-sales {
+      background-color: #af3cf1;
     }
+    &.lob-asset-services {
+      background-color: #00b2dd;
+    }
+  }
+  .show-year {
+    opacity: 1;
+  }
   #time-travel {
     position: fixed;
     top: 1em;
     left: 1em;
     width: 20em;
-    height: 5em;
+    height: auto;
     background: #fff;
     border-radius: 0.5em;
     padding: 1em;
@@ -205,7 +241,7 @@ export default {
     padding: 0.5em;
     text-transform: uppercase;
     h6 {
-      margin: .25em 0;
+      margin: 0.25em 0;
     }
     .marker {
       position: relative;
