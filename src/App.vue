@@ -51,6 +51,9 @@ export default {
           case "Property Sales":
             el.className += " lob-property-sales";
             break;
+          case "Asset Services":
+            el.className += " lob-asset-services";
+            break;
         }
         for (var y = 2000; y < 2018; y++) {
           // if (marker.properties["dayOfClosing"].includes(y.toString())) {
@@ -149,6 +152,10 @@ export default {
       &.lob-property-sales {
         background-color: #af3cf1;
       }
+      &.lob-asset-services {
+        background-color: purple;
+      }
+      
     }
     .show-year {
       opacity: 1;
