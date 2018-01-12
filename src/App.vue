@@ -51,7 +51,7 @@ export default {
           case "Property Sales":
             el.className += " lob-property-sales";
             break;
-          case "Asset Services":
+          case "AS":
             el.className += " lob-asset-services";
             break;
         }
@@ -96,6 +96,18 @@ export default {
       .catch(e => {
         this.errors.push(e);
       });
+  },
+  mounted() {
+    console.log(this.timeTravelYear);
+    var elementsToShow = document.getElementsByClassName("year2003");
+    console.log("year" + this.timeTravelYear);
+    for (var i in elementsToShow) {
+      if (elementsToShow.hasOwnProperty(i)) {
+          elementsToShow[i].classList.add("show-year");
+          console.log('if');
+        }
+        console.log('for');
+      }
   },
   watch: {
     timeTravelYear: function (val, oldVal) {
@@ -153,7 +165,7 @@ export default {
         background-color: #af3cf1;
       }
       &.lob-asset-services {
-        background-color: purple;
+        background-color: #00b2dd;
       }
       
     }
