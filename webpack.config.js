@@ -95,15 +95,15 @@ if (process.env.NODE_ENV === 'production') {
         NODE_ENV: '"production"'
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   sourceMap: true,
+    //   compress: {
+    //     warnings: false
+    //   }
+    // }),
+    // new webpack.LoaderOptionsPlugin({
+    //   minimize: true
+    // }),
     new webpack.ProvidePlugin({
       mapboxgl: 'mapbox-gl'
     })
