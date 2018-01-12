@@ -7,7 +7,7 @@
     </mapbox>
     <div id="time-travel">
       <h3>Current Year: {{timeTravelYear}}</h3>
-      <input type="range" min="2000" max="2018" step="1" v-model="timeTravelYear">
+      <input type="range" min="2003" max="2017" step="1" v-model="timeTravelYear">
     </div>
   </div>
 </template>
