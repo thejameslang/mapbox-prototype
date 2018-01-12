@@ -84,7 +84,7 @@ export default {
         type: "FeatureCollection",
         features: []
       },
-      timeTravelYear: 2013,
+      timeTravelYear: 2003,
       errors: []
     };
   },
