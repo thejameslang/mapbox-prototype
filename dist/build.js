@@ -755,7 +755,7 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.create({
             break;
         }
         for (var y = 2000; y < 2018; y++) {
-          if (marker.properties["dayOfClosing,"].includes(y.toString())) {
+          if (marker.properties["dayOfClosing"].includes(y.toString())) {
             el.className += " year" + y;
           }
         }
@@ -795,9 +795,20 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.create({
 
   watch: {
     timeTravelYear: function timeTravelYear(val, oldVal) {
-      console.log('hachacha');
-      document.getElementsByClassName("year" + oldVal).style.display = "none";
-      document.getElementsByClassName("year" + val).style.display = "block";
+      var elementsToHide = document.getElementsByClassName("year" + oldVal);
+      for (var i in elementsToHide) {
+        if (elementsToHide.hasOwnProperty(i)) {
+          elementsToHide[i].classList.remove("show-year");
+        }
+      }
+      var elementsToShow = document.getElementsByClassName("year" + val);
+      for (var i in elementsToShow) {
+        if (elementsToShow.hasOwnProperty(i)) {
+          elementsToShow[i].classList.add("show-year");
+        }
+      }
+      // document.getElementsByClassName("year" + oldVal).style.display = "none";
+      // document.getElementsByClassName("year" + val).style.display = "block";
       // for (var i = 2000; i < 2018; i++) {
       //   if (timeTravelYear == i) {
       //     document.getElementsByClassName("year" + i).style.display = "block";
@@ -12742,7 +12753,7 @@ exports.clearImmediate = clearImmediate;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(4);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9fa50cd6_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c8461660_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(42);
 function injectStyle (ssrContext) {
   __webpack_require__(16)
 }
@@ -12762,7 +12773,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9fa50cd6_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c8461660_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -12783,7 +12794,7 @@ var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(19)("5d3c8f75", content, true);
+var update = __webpack_require__(19)("0119fbc5", content, true);
 
 /***/ }),
 /* 17 */
@@ -12794,7 +12805,7 @@ exports = module.exports = __webpack_require__(18)(false);
 
 
 // module
-exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app #map .marker {\n      display: none;\n      border: none;\n      cursor: pointer;\n      height: 15px;\n      width: 15px;\n      border-radius: 50%;\n}\n#app #map .marker.lob-dsf {\n        background-color: #00a657;\n}\n#app #map .marker.lob-property-sales {\n        background-color: #af3cf1;\n}\n#app #map .year2011 {\n      display: block;\n}\n#app #time-travel {\n    position: fixed;\n    top: 1em;\n    left: 1em;\n    width: 20em;\n    height: 5em;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 1em;\n    text-align: center;\n    text-transform: uppercase;\n}\n#app #time-travel input {\n      width: 100%;\n}\n", ""]);
+exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app #map .marker {\n      opacity: 0;\n      border: none;\n      cursor: pointer;\n      height: 15px;\n      width: 15px;\n      border-radius: 50%;\n      transition: opacity 1s;\n}\n#app #map .marker.lob-dsf {\n        background-color: #00a657;\n}\n#app #map .marker.lob-property-sales {\n        background-color: #af3cf1;\n}\n#app #map .show-year {\n      opacity: 1;\n}\n#app #time-travel {\n    position: fixed;\n    top: 1em;\n    left: 1em;\n    width: 20em;\n    height: 5em;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 1em;\n    text-align: center;\n    text-transform: uppercase;\n}\n#app #time-travel input {\n      width: 100%;\n}\n", ""]);
 
 // exports
 
