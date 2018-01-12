@@ -9,6 +9,11 @@
       <h3>Current Year: {{timeTravelYear}}</h3>
       <input type="range" min="2003" max="2017" step="1" v-model="timeTravelYear">
     </div>
+    <div class="legend">
+      <h6><div class="marker lob-dsf show-year"></div>DSF</h6>
+      <h6><div class="marker lob-property-sales show-year"></div>Property Sales</h6>
+      <h6><div class="marker lob-asset-services show-year"></div>Asset Services</h6>
+    </div>
   </div>
 </template>
 
@@ -57,7 +62,9 @@ export default {
         }
         for (var y = 2000; y < 2018; y++) {
           // if (marker.properties["dayOfClosing"].includes(y.toString())) {
-          if (marker.properties["dayOfClosing"].substring(0,4) == y.toString()) {
+          if (
+            marker.properties["dayOfClosing"].substring(0, 4) == y.toString()
+          ) {
             el.className += " year" + y;
           }
         }
@@ -103,14 +110,14 @@ export default {
     console.log("year" + this.timeTravelYear);
     for (var i in elementsToShow) {
       if (elementsToShow.hasOwnProperty(i)) {
-          elementsToShow[i].classList.add("show-year");
-          console.log('if');
-        }
-        console.log('for');
+        elementsToShow[i].classList.add("show-year");
+        console.log("if");
       }
+      console.log("for");
+    }
   },
   watch: {
-    timeTravelYear: function (val, oldVal) {
+    timeTravelYear: function(val, oldVal) {
       var elementsToHide = document.getElementsByClassName("year" + oldVal);
       for (var i in elementsToHide) {
         if (elementsToHide.hasOwnProperty(i)) {
@@ -147,7 +154,8 @@ export default {
     .mapboxgl-ctrl-logo {
       display: none;
     }
-    .marker {
+  }
+  .marker {
       opacity: 0;
       border: none;
       cursor: pointer;
@@ -167,12 +175,10 @@ export default {
       &.lob-asset-services {
         background-color: #00b2dd;
       }
-      
     }
     .show-year {
       opacity: 1;
     }
-  }
   #time-travel {
     position: fixed;
     top: 1em;
@@ -186,6 +192,26 @@ export default {
     text-transform: uppercase;
     input {
       width: 100%;
+    }
+  }
+  .legend {
+    position: fixed;
+    bottom: 1em;
+    left: 1em;
+    width: 8em;
+    height: 4em;
+    background: #fff;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    text-transform: uppercase;
+    h6 {
+      margin: .25em 0;
+    }
+    .marker {
+      position: relative;
+      top: 3px;
+      margin-right: 1em;
+      display: inline-block;
     }
   }
 }
