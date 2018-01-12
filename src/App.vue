@@ -2,8 +2,13 @@
   <div id="app">
     <mapbox v-bind="mapObject"
             @map-init="mapInitialized"
+            @map-load="mapLoaded"
             >
     </mapbox>
+    <div id="time-travel">
+      <h3>Current Year: {{timeTravelYear}}</h3>
+      <input type="range" min="2000" max="2018" step="1" v-model="timeTravelYear">
+    </div>
   </div>
 </template>
 
@@ -11,8 +16,7 @@
 import Mapbox from "mapbox-gl-vue";
 import axios from "axios";
 export const HTTP = axios.create({
-  baseURL:
-    "http://ecs-first-run-alb-1190988938.us-east-2.elb.amazonaws.com/dealgeolocation",
+  baseURL: "http://ecs-first-run-alb-1190988938.us-east-2.elb.amazonaws.com/",
   headers: {
     "Access-Control-Allow-Origin": "*"
   },
@@ -30,6 +34,34 @@ export default {
         accessToken: this.mapObject.accessToken
       });
       map.addControl(Geocoder);
+    },
+    mapLoaded(map) {
+      map.addSource("places", {
+        type: "geojson",
+        data: this.places
+      });
+      this.places.features.forEach(function(marker, i) {
+        var el = document.createElement("div");
+        el.id = "marker-" + i;
+        el.className = "marker";
+        switch (marker.properties["lob"]) {
+          case "DSF":
+            el.className += " lob-dsf";
+            break;
+          case "Property Sales":
+            el.className += " lob-property-sales";
+            break;
+        }
+        for (var y = 2000; y < 2018; y++) {
+          if (marker.properties["dayOfClosing,"].includes(y.toString())) {
+            el.className += " year" + y;
+          }
+        }
+
+        new mapboxgl.Marker(el, { offset: [0, -15] })
+          .setLngLat(marker.geometry.coordinates)
+          .addTo(map);
+      });
     }
   },
   data() {
@@ -44,24 +76,42 @@ export default {
           zoom: 10
         }
       },
-      places: {},
+      places: {
+        type: "FeatureCollection",
+        features: []
+      },
+      timeTravelYear: 2000,
       errors: []
     };
   },
   created() {
-    HTTP.get("posts")
+    HTTP.get("dealgeolocation")
       .then(response => {
         this.places = response.data;
       })
       .catch(e => {
         this.errors.push(e);
       });
+  },
+  watch: {
+    timeTravelYear: function (val, oldVal) {
+      console.log('hachacha');
+      document.getElementsByClassName("year" + oldVal).style.display = "none";
+      document.getElementsByClassName("year" + val).style.display = "block";
+      // for (var i = 2000; i < 2018; i++) {
+      //   if (timeTravelYear == i) {
+      //     document.getElementsByClassName("year" + i).style.display = "block";
+      //     console.log('changing year ' + i);
+      //   }
+      // }
+    }
   }
 };
 </script>
 
 <style lang="scss">
 #app {
+  font-family: sans-serif;
   #map {
     position: absolute;
     top: 0;
@@ -69,6 +119,41 @@ export default {
     width: 100%;
     .mapboxgl-ctrl-logo {
       display: none;
+    }
+    .marker {
+      display: none;
+      border: none;
+      cursor: pointer;
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+      // background-image: url(./assets/marker.png);
+      // background-size: 100% 100%;
+      // background-color: rgba(0, 0, 0, 0);
+      &.lob-dsf {
+        background-color: #00a657;
+      }
+      &.lob-property-sales {
+        background-color: #af3cf1;
+      }
+    }
+    .year2011 {
+      display: block;
+    }
+  }
+  #time-travel {
+    position: fixed;
+    top: 1em;
+    left: 1em;
+    width: 20em;
+    height: 5em;
+    background: #fff;
+    border-radius: 0.5em;
+    padding: 1em;
+    text-align: center;
+    text-transform: uppercase;
+    input {
+      width: 100%;
     }
   }
 }
