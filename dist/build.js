@@ -719,6 +719,7 @@ process.umask = function() { return 0; };
 //
 //
 //
+//
 
 
 
@@ -789,7 +790,8 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.create({
         features: []
       },
       timeTravelYear: 2003,
-      errors: []
+      errors: [],
+      playPause: false
     };
   },
   created: function created() {
@@ -813,13 +815,39 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.create({
       console.log("for");
     }
   },
+  updated: function updated() {
+    var _this2 = this;
+
+    if (this.playPause) {
+      setTimeout(function () {
+        if (_this2.timeTravelYear === 2017) {
+          _this2.timeTravelYear = 2003;
+        } else {
+          _this2.timeTravelYear = _this2.timeTravelYear + 1;
+        }
+      }, 500);
+    }
+  },
 
   watch: {
     timeTravelYear: function timeTravelYear(val, oldVal) {
       var elementsToHide = document.getElementsByClassName("year" + oldVal);
-      for (var i in elementsToHide) {
-        if (elementsToHide.hasOwnProperty(i)) {
-          elementsToHide[i].classList.remove("show-year");
+      if (!this.playPause) {
+        console.log('clearing last year');
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.remove("show-year");
+          }
+        }
+      } else {
+        if (oldVal === 2017) {
+          console.log('clearing all');
+          elementsToHide = document.getElementsByClassName("marker");
+          for (var i in elementsToHide) {
+            if (elementsToHide.hasOwnProperty(i)) {
+              elementsToHide[i].classList.remove("show-year");
+            }
+          }
         }
       }
       var elementsToShow = document.getElementsByClassName("year" + val);
@@ -834,6 +862,16 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_1_axios___default.a.create({
       //   if (timeTravelYear == i) {
       //     document.getElementsByClassName("year" + i).style.display = "block";
       //     console.log('changing year ' + i);
+      //   }
+      // }
+    },
+    playPause: function playPause(val, oldVal) {
+      // console.log("playPause");
+      // while (val === true) {
+      //   if (this.timeTravelYear === 2017) {
+      //     this.timeTravelYear = 2003;
+      //   } else {
+      //     this.timeTravelYear++;
       //   }
       // }
     }
@@ -12774,7 +12812,7 @@ exports.clearImmediate = clearImmediate;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(4);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_801da6bc_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1048eed0_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(42);
 function injectStyle (ssrContext) {
   __webpack_require__(16)
 }
@@ -12794,7 +12832,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_801da6bc_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1048eed0_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -12815,7 +12853,7 @@ var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(19)("1dc2e430", content, true);
+var update = __webpack_require__(19)("ac6d2f84", content, true);
 
 /***/ }),
 /* 17 */
@@ -12826,7 +12864,7 @@ exports = module.exports = __webpack_require__(18)(false);
 
 
 // module
-exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app .marker {\n    opacity: 0;\n    border: none;\n    cursor: pointer;\n    height: 15px;\n    width: 15px;\n    border-radius: 50%;\n    transition: opacity 1s;\n}\n#app .marker.lob-dsf {\n      background-color: #00a657;\n}\n#app .marker.lob-property-sales {\n      background-color: #af3cf1;\n}\n#app .marker.lob-asset-services {\n      background-color: #00b2dd;\n}\n#app .show-year {\n    opacity: 1;\n}\n#app #time-travel {\n    position: fixed;\n    top: 1em;\n    left: 1em;\n    width: 20em;\n    height: 5em;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 1em;\n    text-align: center;\n    text-transform: uppercase;\n}\n#app #time-travel input {\n      width: 100%;\n}\n#app .legend {\n    position: fixed;\n    bottom: 1em;\n    left: 1em;\n    width: 8em;\n    height: 4em;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 0.5em;\n    text-transform: uppercase;\n}\n#app .legend h6 {\n      margin: .25em 0;\n}\n#app .legend .marker {\n      position: relative;\n      top: 3px;\n      margin-right: 1em;\n      display: inline-block;\n}\n", ""]);
+exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app .marker {\n    opacity: 0;\n    border: none;\n    cursor: pointer;\n    height: 15px;\n    width: 15px;\n    border-radius: 50%;\n    transition: opacity 1s;\n}\n#app .marker.lob-dsf {\n      background-color: #00a657;\n}\n#app .marker.lob-property-sales {\n      background-color: #af3cf1;\n}\n#app .marker.lob-asset-services {\n      background-color: #00b2dd;\n}\n#app .show-year {\n    opacity: 1;\n}\n#app #time-travel {\n    position: fixed;\n    top: 1em;\n    left: 1em;\n    width: 20em;\n    height: auto;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 1em;\n    text-align: center;\n    text-transform: uppercase;\n}\n#app #time-travel input {\n      width: 100%;\n}\n#app .legend {\n    position: fixed;\n    bottom: 1em;\n    left: 1em;\n    width: 8em;\n    height: 4em;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 0.5em;\n    text-transform: uppercase;\n}\n#app .legend h6 {\n      margin: 0.25em 0;\n}\n#app .legend .marker {\n      position: relative;\n      top: 3px;\n      margin-right: 1em;\n      display: inline-block;\n}\n", ""]);
 
 // exports
 
@@ -14786,7 +14824,7 @@ module.exports = function spread(callback) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[_c('mapbox',_vm._b({on:{"map-init":_vm.mapInitialized,"map-load":_vm.mapLoaded}},'mapbox',_vm.mapObject,false)),_vm._v(" "),_c('div',{attrs:{"id":"time-travel"}},[_c('h3',[_vm._v("Current Year: "+_vm._s(_vm.timeTravelYear))]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.timeTravelYear),expression:"timeTravelYear"}],attrs:{"type":"range","min":"2003","max":"2017","step":"1"},domProps:{"value":(_vm.timeTravelYear)},on:{"__r":function($event){_vm.timeTravelYear=$event.target.value}}})]),_vm._v(" "),_vm._m(0)],1)}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[_c('mapbox',_vm._b({on:{"map-init":_vm.mapInitialized,"map-load":_vm.mapLoaded}},'mapbox',_vm.mapObject,false)),_vm._v(" "),_c('div',{attrs:{"id":"time-travel"}},[_c('h3',[_vm._v("Current Year: "+_vm._s(_vm.timeTravelYear))]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.timeTravelYear),expression:"timeTravelYear"}],attrs:{"type":"range","min":"2003","max":"2017","step":"1"},domProps:{"value":(_vm.timeTravelYear)},on:{"__r":function($event){_vm.timeTravelYear=$event.target.value}}}),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.playPause = !_vm.playPause}}},[(!_vm.playPause)?_c('span',[_vm._v("Play")]):_vm._e(),(_vm.playPause)?_c('span',[_vm._v("Pause")]):_vm._e()])]),_vm._v(" "),_vm._m(0)],1)}
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"legend"},[_c('h6',[_c('div',{staticClass:"marker lob-dsf show-year"}),_vm._v("DSF")]),_vm._v(" "),_c('h6',[_c('div',{staticClass:"marker lob-property-sales show-year"}),_vm._v("Property Sales")]),_vm._v(" "),_c('h6',[_c('div',{staticClass:"marker lob-asset-services show-year"}),_vm._v("Asset Services")])])}]
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
