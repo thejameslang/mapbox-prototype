@@ -53,7 +53,7 @@ export default {
             break;
         }
         for (var y = 2000; y < 2018; y++) {
-          if (marker.properties["dayOfClosing,"].includes(y.toString())) {
+          if (marker.properties["dayOfClosing"].includes(y.toString())) {
             el.className += " year" + y;
           }
         }
@@ -95,9 +95,20 @@ export default {
   },
   watch: {
     timeTravelYear: function (val, oldVal) {
-      console.log('hachacha');
-      document.getElementsByClassName("year" + oldVal).style.display = "none";
-      document.getElementsByClassName("year" + val).style.display = "block";
+      var elementsToHide = document.getElementsByClassName("year" + oldVal);
+      for (var i in elementsToHide) {
+        if (elementsToHide.hasOwnProperty(i)) {
+          elementsToHide[i].classList.remove("show-year");
+        }
+      }
+      var elementsToShow = document.getElementsByClassName("year" + val);
+      for (var i in elementsToShow) {
+        if (elementsToShow.hasOwnProperty(i)) {
+          elementsToShow[i].classList.add("show-year");
+        }
+      }
+      // document.getElementsByClassName("year" + oldVal).style.display = "none";
+      // document.getElementsByClassName("year" + val).style.display = "block";
       // for (var i = 2000; i < 2018; i++) {
       //   if (timeTravelYear == i) {
       //     document.getElementsByClassName("year" + i).style.display = "block";
@@ -121,7 +132,7 @@ export default {
       display: none;
     }
     .marker {
-      display: none;
+      opacity: 0;
       border: none;
       cursor: pointer;
       height: 15px;
@@ -130,6 +141,7 @@ export default {
       // background-image: url(./assets/marker.png);
       // background-size: 100% 100%;
       // background-color: rgba(0, 0, 0, 0);
+      transition: opacity 1s;
       &.lob-dsf {
         background-color: #00a657;
       }
@@ -137,8 +149,8 @@ export default {
         background-color: #af3cf1;
       }
     }
-    .year2011 {
-      display: block;
+    .show-year {
+      opacity: 1;
     }
   }
   #time-travel {
