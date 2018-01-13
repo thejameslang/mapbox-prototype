@@ -246,7 +246,7 @@ export default {
     h6 {
       margin: 0.25em 0;
     }
-    .marker {
+    .marker-legend {
       position: relative;
       top: 3px;
       margin-right: 1em;
