@@ -122,18 +122,20 @@ export default {
     if (this.playPause) {
       setTimeout(() => {
         if (this.timeTravelYear === 2017) {
-          this.timeTravelYear = 2003;
+          setTimeout(() => {
+            this.timeTravelYear = 2003;
+          }, 5000);
         } else {
           this.timeTravelYear = this.timeTravelYear + 1;
         }
-      }, 500);
+      }, 1000);
     }
   },
   watch: {
     timeTravelYear: function(val, oldVal) {
       var elementsToHide = document.getElementsByClassName("year" + oldVal);
       if (!this.playPause) {
-        console.log('clearing last year');
+        console.log("clearing last year");
         for (var i in elementsToHide) {
           if (elementsToHide.hasOwnProperty(i)) {
             elementsToHide[i].classList.remove("show-year");
@@ -141,7 +143,7 @@ export default {
         }
       } else {
         if (oldVal === 2017) {
-          console.log('clearing all');
+          console.log("clearing all");
           elementsToHide = document.getElementsByClassName("marker");
           for (var i in elementsToHide) {
             if (elementsToHide.hasOwnProperty(i)) {
@@ -191,7 +193,8 @@ export default {
       display: none;
     }
   }
-  .marker, .marker-legend {
+  .marker,
+  .marker-legend {
     opacity: 0;
     border: none;
     cursor: pointer;
@@ -201,7 +204,7 @@ export default {
     // background-image: url(./assets/marker.png);
     // background-size: 100% 100%;
     // background-color: rgba(0, 0, 0, 0);
-    transition: opacity 1s;
+    transition: opacity 0.5s;
     &.lob-dsf {
       background-color: #00a657;
     }
