@@ -11,9 +11,9 @@
       <button v-on:click="playPause = !playPause"><span v-if="!playPause">Play</span><span v-if="playPause">Pause</span></button>
     </div>
     <div class="legend">
-      <h6><div class="marker lob-dsf show-year"></div>DSF</h6>
-      <h6><div class="marker lob-property-sales show-year"></div>Property Sales</h6>
-      <h6><div class="marker lob-asset-services show-year"></div>Asset Services</h6>
+      <h6><div class="marker-legend lob-dsf show-year"></div>DSF</h6>
+      <h6><div class="marker-legend lob-property-sales show-year"></div>Property Sales</h6>
+      <h6><div class="marker-legend lob-asset-services show-year"></div>Asset Services</h6>
     </div>
   </div>
 </template>
@@ -191,7 +191,7 @@ export default {
       display: none;
     }
   }
-  .marker {
+  .marker, .marker-legend {
     opacity: 0;
     border: none;
     cursor: pointer;
