@@ -139,7 +139,7 @@ export default {
               }
               if (marker.properties[key] != 'null') {
                 setHTMLString +=
-                "<h4>" + keyName + ": " +
+                "<h4 class='popup'>" + "<span class='property-detail-key'>" + keyName + "</span>" + ": " +
                 marker.properties[key] +
                 "</h4> ";
               }
@@ -303,6 +303,12 @@ export default {
   }
   .show-year {
     opacity: 0.5;
+  }
+  .popup {
+    font-weight: normal;
+  }
+  .property-detail-key {
+    font-weight: bold;
   }
   #time-travel {
     position: fixed;
