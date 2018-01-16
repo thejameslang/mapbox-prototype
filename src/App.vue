@@ -40,6 +40,26 @@ export default {
     Header
   },
   methods: {
+    flyToStore(currentFeature) {
+      map.flyTo({
+        center: currentFeature.geometry.coordinates,
+        zoom: 15
+      });
+    },
+    createPopUp(currentFeature) {
+      var popUps = document.getElementsByClassName("mapboxgl-popup");
+      if (popUps[0]) popUps[0].remove();
+
+      var popup = new mapboxgl.Popup({ closeOnClick: false })
+        .setLngLat(currentFeature.geometry.coordinates)
+        .setHTML(
+          "<h3>Sweetgreen</h3>" +
+            "<h4>" +
+            currentFeature.properties.address +
+            "</h4>"
+        )
+        .addTo(map);
+    },
     mapInitialized(map) {
       const Geocoder = new MapboxGeocoder({
         accessToken: this.mapObject.accessToken
@@ -78,6 +98,42 @@ export default {
         new mapboxgl.Marker(el, { offset: [0, -15] })
           .setLngLat(marker.geometry.coordinates)
           .addTo(map);
+
+        el.addEventListener("click", function(e) {
+          console.log("clicked");
+          
+          map.flyTo({
+            center: marker.geometry.coordinates,
+            zoom: 15
+          });
+          
+          var popUps = document.getElementsByClassName("mapboxgl-popup");
+          if (popUps[0]) popUps[0].remove();
+
+          var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15] })
+            .setLngLat(marker.geometry.coordinates)
+            .setHTML(
+                "<h4>Property Type Sub Code: " +
+                marker.properties.propertyTypeSubCode +
+                "</h4>" +
+                "<h4>Day of Closing: " +
+                marker.properties.dayOfClosing +
+                "</h4>" +
+                "<h4>Deal Value: " +
+                marker.properties.dealValue +
+                "</h4>" +
+                "<h4>Property Type: " +
+                marker.properties.propertyType +
+                "</h4>" +
+                "<h4>Net Rentable Square Feet: " +
+                marker.properties.netRentableSqFt +
+                "</h4>" +
+                "<h4>Line of Business: " +
+                marker.properties.lob +
+                "</h4>"
+            )
+            .addTo(map);
+        });
       });
     }
   },
@@ -124,7 +180,7 @@ export default {
         console.log("if");
       }
       console.log("for");
-    };
+    }
     this.playPause = true;
   },
   updated() {
