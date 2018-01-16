@@ -1,12 +1,13 @@
 <template>
   <div id="app">
+    <Header/>
     <mapbox v-bind="mapObject"
             @map-init="mapInitialized"
             @map-load="mapLoaded"
             >
     </mapbox>
     <div id="time-travel">
-      <h3>Current Year: {{timeTravelYear}}</h3>
+      <h3>Current Year: <span>{{timeTravelYear}}</span></h3>
       <input type="range" min="2003" max="2017" step="1" v-model="timeTravelYear">
       <button v-on:click="playPause = !playPause"><span v-if="!playPause">Play</span><span v-if="playPause">Pause</span></button>
     </div>
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import Header from "./components/Header";
 import Mapbox from "mapbox-gl-vue";
 import axios from "axios";
 export const HTTP = axios.create({
@@ -33,7 +35,10 @@ export const HTTP = axios.create({
 });
 export default {
   name: "app",
-  components: { Mapbox },
+  components: {
+    Mapbox,
+    Header
+  },
   methods: {
     mapInitialized(map) {
       const Geocoder = new MapboxGeocoder({
@@ -87,6 +92,9 @@ export default {
           center: [-118.2437, 34.0522],
           zoom: 10
         }
+        // navControl: {
+        //   position: 'bottom-left'
+        // }
       },
       places: {
         type: "FeatureCollection",
@@ -116,7 +124,8 @@ export default {
         console.log("if");
       }
       console.log("for");
-    }
+    };
+    this.playPause = true;
   },
   updated() {
     if (this.playPause) {
@@ -124,11 +133,11 @@ export default {
         if (this.timeTravelYear === 2017) {
           setTimeout(() => {
             this.timeTravelYear = 2003;
-          }, 5000);
+          }, 2500);
         } else {
           this.timeTravelYear = this.timeTravelYear + 1;
         }
-      }, 1000);
+      }, 500);
     }
   },
   watch: {
@@ -193,6 +202,15 @@ export default {
       display: none;
     }
   }
+
+  .mapboxgl-ctrl-group {
+    margin: 20px 10px 0;
+  }
+
+  .mapboxgl-ctrl-attrib {
+    display: none;
+  }
+
   .marker,
   .marker-legend {
     opacity: 0;
@@ -220,23 +238,52 @@ export default {
   }
   #time-travel {
     position: fixed;
-    top: 1em;
-    left: 1em;
-    width: 20em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     height: auto;
     background: #fff;
-    border-radius: 0.5em;
-    padding: 1em;
+    // border-radius: 0.5em;
+    padding: 1em 0;
     text-align: center;
-    text-transform: uppercase;
+    text-transform: capitalize;
+    border: 1px solid #00a657;
+    background-color: #eef8f3;
+    color: #1a1a1a;
+    h3 {
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.2;
+      color: #1a1a1a;
+      margin-bottom: 1em;
+      span {
+        color: #5a5e64;
+      }
+    }
     input {
-      width: 100%;
+      display: block;
+      width: 90%;
+      margin: 0 1em;
+    }
+    button {
+      cursor: pointer;
+      padding: 0.625rem;
+      border: none;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #fff;
+      background-color: #00a657;
+      border-radius: 0.125rem;
+      margin-top: 1em;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+      text-decoration: none;
     }
   }
   .legend {
     position: fixed;
-    bottom: 1em;
-    left: 1em;
+    top: 70px;
+    left: 10px;
     width: 8em;
     height: 4em;
     background: #fff;
@@ -251,6 +298,7 @@ export default {
       top: 3px;
       margin-right: 1em;
       display: inline-block;
+      opacity: 1;
     }
   }
 }
