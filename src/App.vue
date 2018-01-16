@@ -137,7 +137,7 @@ export default {
                   keyName = 'Line Of Business';
                   break;
               }
-              if (marker.properties[key] != 'null') {
+              if (marker.properties[key] != 'null' && marker.properties[key] != '') {
                 setHTMLString +=
                 "<h4 class='popup'>" + "<span class='property-detail-key'>" + keyName + "</span>" + ": " +
                 marker.properties[key] +
