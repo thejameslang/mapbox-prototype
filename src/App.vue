@@ -289,7 +289,7 @@ export default {
     }
   }
   .show-year {
-    opacity: 0.25;
+    opacity: 0.5;
   }
   #time-travel {
     position: fixed;
