@@ -1155,6 +1155,18 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
     Header: __WEBPACK_IMPORTED_MODULE_0__components_Header__["a" /* default */]
   },
   methods: {
+    flyToStore: function flyToStore(currentFeature) {
+      map.flyTo({
+        center: currentFeature.geometry.coordinates,
+        zoom: 15
+      });
+    },
+    createPopUp: function createPopUp(currentFeature) {
+      var popUps = document.getElementsByClassName("mapboxgl-popup");
+      if (popUps[0]) popUps[0].remove();
+
+      var popup = new mapboxgl.Popup({ closeOnClick: false }).setLngLat(currentFeature.geometry.coordinates).setHTML("<h3>Sweetgreen</h3>" + "<h4>" + currentFeature.properties.address + "</h4>").addTo(map);
+    },
     mapInitialized: function mapInitialized(map) {
       var Geocoder = new MapboxGeocoder({
         accessToken: this.mapObject.accessToken
@@ -1189,6 +1201,20 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
         }
 
         new mapboxgl.Marker(el, { offset: [0, -15] }).setLngLat(marker.geometry.coordinates).addTo(map);
+
+        el.addEventListener("click", function (e) {
+          console.log("clicked");
+
+          map.flyTo({
+            center: marker.geometry.coordinates,
+            zoom: 15
+          });
+
+          var popUps = document.getElementsByClassName("mapboxgl-popup");
+          if (popUps[0]) popUps[0].remove();
+
+          var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15] }).setLngLat(marker.geometry.coordinates).setHTML("<h4>Property Type Sub Code: " + marker.properties.propertyTypeSubCode + "</h4>" + "<h4>Day of Closing: " + marker.properties.dayOfClosing + "</h4>" + "<h4>Deal Value: " + marker.properties.dealValue + "</h4>" + "<h4>Property Type: " + marker.properties.propertyType + "</h4>" + "<h4>Net Rentable Square Feet: " + marker.properties.netRentableSqFt + "</h4>" + "<h4>Line of Business: " + marker.properties.lob + "</h4>").addTo(map);
+        });
       });
     }
   },
@@ -1233,7 +1259,7 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
         console.log("if");
       }
       console.log("for");
-    };
+    }
     this.playPause = true;
   },
   updated: function updated() {
@@ -13263,7 +13289,7 @@ exports.clearImmediate = clearImmediate;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(7);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1552cc5a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_20c60782_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(47);
 function injectStyle (ssrContext) {
   __webpack_require__(20)
 }
@@ -13283,7 +13309,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1552cc5a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_20c60782_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -13304,7 +13330,7 @@ var content = __webpack_require__(21);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("8b320248", content, true);
+var update = __webpack_require__(5)("26d018e1", content, true);
 
 /***/ }),
 /* 21 */
