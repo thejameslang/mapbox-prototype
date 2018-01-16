@@ -1202,13 +1202,12 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
 
         new mapboxgl.Marker(el, { offset: [0, -15] }).setLngLat(marker.geometry.coordinates).addTo(map);
 
-        el.addEventListener("click", function (e) {
-          console.log("clicked");
+        el.addEventListener("mouseover", function (e) {
 
-          map.flyTo({
-            center: marker.geometry.coordinates,
-            zoom: 15
-          });
+          // map.flyTo({
+          //   center: marker.geometry.coordinates,
+          //   zoom: 15
+          // });
 
           var popUps = document.getElementsByClassName("mapboxgl-popup");
           if (popUps[0]) popUps[0].remove();
@@ -13289,7 +13288,7 @@ exports.clearImmediate = clearImmediate;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(7);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_20c60782_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_8a5bd930_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(47);
 function injectStyle (ssrContext) {
   __webpack_require__(20)
 }
@@ -13309,7 +13308,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_20c60782_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_8a5bd930_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -13330,7 +13329,7 @@ var content = __webpack_require__(21);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("26d018e1", content, true);
+var update = __webpack_require__(5)("1e6547d7", content, true);
 
 /***/ }),
 /* 21 */
@@ -13341,7 +13340,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app .mapboxgl-ctrl-group {\n    margin: 20px 10px 0;\n}\n#app .mapboxgl-ctrl-attrib {\n    display: none;\n}\n#app .marker,\n  #app .marker-legend {\n    opacity: 0;\n    border: none;\n    cursor: pointer;\n    height: 15px;\n    width: 15px;\n    border-radius: 50%;\n    transition: opacity 0.5s;\n}\n#app .marker.lob-dsf,\n    #app .marker-legend.lob-dsf {\n      background-color: #00a657;\n}\n#app .marker.lob-property-sales,\n    #app .marker-legend.lob-property-sales {\n      background-color: #af3cf1;\n}\n#app .marker.lob-asset-services,\n    #app .marker-legend.lob-asset-services {\n      background-color: #00b2dd;\n}\n#app .show-year {\n    opacity: 0.25;\n}\n#app #time-travel {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    width: 100%;\n    height: auto;\n    background: #fff;\n    padding: 1em 0;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel h3 {\n      margin: 0;\n      font-size: 0.875rem;\n      line-height: 1.2;\n      color: #1a1a1a;\n      margin-bottom: 1em;\n}\n#app #time-travel h3 span {\n        color: #5a5e64;\n}\n#app #time-travel input {\n      display: block;\n      width: 90%;\n      margin: 0 1em;\n}\n#app #time-travel button {\n      cursor: pointer;\n      padding: 0.625rem;\n      border: none;\n      font-size: 0.875rem;\n      font-weight: 700;\n      color: #fff;\n      background-color: #00a657;\n      border-radius: 0.125rem;\n      margin-top: 1em;\n      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n      text-decoration: none;\n}\n#app .legend {\n    position: fixed;\n    top: 70px;\n    left: 10px;\n    width: 8em;\n    height: 4em;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 0.5em;\n    text-transform: uppercase;\n}\n#app .legend h6 {\n      margin: 0.25em 0;\n}\n#app .legend .marker-legend {\n      position: relative;\n      top: 3px;\n      margin-right: 1em;\n      display: inline-block;\n      opacity: 1;\n}\n", ""]);
+exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app .mapboxgl-ctrl-group {\n    margin: 20px 10px 0;\n}\n#app .mapboxgl-ctrl-attrib {\n    display: none;\n}\n#app .marker,\n  #app .marker-legend {\n    opacity: 0;\n    border: none;\n    cursor: pointer;\n    height: 15px;\n    width: 15px;\n    border-radius: 50%;\n    transition: opacity 0.5s;\n}\n#app .marker.lob-dsf,\n    #app .marker-legend.lob-dsf {\n      background-color: #00a657;\n}\n#app .marker.lob-property-sales,\n    #app .marker-legend.lob-property-sales {\n      background-color: #af3cf1;\n}\n#app .marker.lob-asset-services,\n    #app .marker-legend.lob-asset-services {\n      background-color: #00b2dd;\n}\n#app .show-year {\n    opacity: 0.5;\n}\n#app #time-travel {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    width: 100%;\n    height: auto;\n    background: #fff;\n    padding: 1em 0;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel h3 {\n      margin: 0;\n      font-size: 0.875rem;\n      line-height: 1.2;\n      color: #1a1a1a;\n      margin-bottom: 1em;\n}\n#app #time-travel h3 span {\n        color: #5a5e64;\n}\n#app #time-travel input {\n      display: block;\n      width: 90%;\n      margin: 0 1em;\n}\n#app #time-travel button {\n      cursor: pointer;\n      padding: 0.625rem;\n      border: none;\n      font-size: 0.875rem;\n      font-weight: 700;\n      color: #fff;\n      background-color: #00a657;\n      border-radius: 0.125rem;\n      margin-top: 1em;\n      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n      text-decoration: none;\n}\n#app .legend {\n    position: fixed;\n    top: 70px;\n    left: 10px;\n    width: 8em;\n    height: 4em;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 0.5em;\n    text-transform: uppercase;\n}\n#app .legend h6 {\n      margin: 0.25em 0;\n}\n#app .legend .marker-legend {\n      position: relative;\n      top: 3px;\n      margin-right: 1em;\n      display: inline-block;\n      opacity: 1;\n}\n", ""]);
 
 // exports
 
