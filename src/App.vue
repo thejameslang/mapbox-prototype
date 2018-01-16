@@ -100,38 +100,53 @@ export default {
           .addTo(map);
 
         el.addEventListener("mouseover", function(e) {
-          
           // map.flyTo({
           //   center: marker.geometry.coordinates,
           //   zoom: 15
           // });
-          
+
           var popUps = document.getElementsByClassName("mapboxgl-popup");
           if (popUps[0]) popUps[0].remove();
 
-          var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15] })
-            .setLngLat(marker.geometry.coordinates)
-            .setHTML(
-                "<h4>Property Type Sub Code: " +
-                marker.properties.propertyTypeSubCode +
-                "</h4>" +
-                "<h4>Day of Closing: " +
-                marker.properties.dayOfClosing +
-                "</h4>" +
-                "<h4>Deal Value: " +
-                marker.properties.dealValue +
-                "</h4>" +
-                "<h4>Property Type: " +
-                marker.properties.propertyType +
-                "</h4>" +
-                "<h4>Net Rentable Square Feet: " +
-                marker.properties.netRentableSqFt +
-                "</h4>" +
-                "<h4>Line of Business: " +
-                marker.properties.lob +
-                "</h4>"
-            )
-            .addTo(map);
+          var popup = new mapboxgl.Popup({
+            closeOnClick: false,
+            offset: [0, -15]
+          }).setLngLat(marker.geometry.coordinates);
+
+          var setHTMLString = "";
+          for (var key in marker.properties) {
+            var keyName = '';
+            if (marker.properties.hasOwnProperty(key)) {
+              switch (key) {
+                case 'propertyTypeSubCode':
+                  keyName = 'Property Type Sub Code';
+                  break;
+                case 'dayOfClosing':
+                  keyName = 'Day Of Closing';
+                  break;
+                case 'dealValue':
+                  keyName = 'Deal Value';
+                  break;
+                case 'propertyType':
+                  keyName = 'Property Type';
+                  break;
+                case 'netRentableSqFt':
+                  keyName = 'Net Rentable Square Feet';
+                  break;
+                case 'lob':
+                  keyName = 'Line Of Business';
+                  break;
+              }
+              if (marker.properties[key] != 'null') {
+                setHTMLString +=
+                "<h4>" + keyName + ": " +
+                marker.properties[key] +
+                "</h4> ";
+              }
+            }
+          }
+          console.log(setHTMLString);
+          popup.setHTML(setHTMLString).addTo(map);
         });
       });
     }
@@ -176,9 +191,7 @@ export default {
     for (var i in elementsToShow) {
       if (elementsToShow.hasOwnProperty(i)) {
         elementsToShow[i].classList.add("show-year");
-        console.log("if");
       }
-      console.log("for");
     }
     this.playPause = true;
   },
