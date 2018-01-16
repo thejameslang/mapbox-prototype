@@ -99,13 +99,12 @@ export default {
           .setLngLat(marker.geometry.coordinates)
           .addTo(map);
 
-        el.addEventListener("click", function(e) {
-          console.log("clicked");
+        el.addEventListener("mouseover", function(e) {
           
-          map.flyTo({
-            center: marker.geometry.coordinates,
-            zoom: 15
-          });
+          // map.flyTo({
+          //   center: marker.geometry.coordinates,
+          //   zoom: 15
+          // });
           
           var popUps = document.getElementsByClassName("mapboxgl-popup");
           if (popUps[0]) popUps[0].remove();
