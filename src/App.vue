@@ -117,6 +117,12 @@ export default {
           for (var key in marker.properties) {
             var keyName = "";
             if (marker.properties.hasOwnProperty(key)) {
+
+              var keyValue = marker.properties[key];
+              if (keyValue.substring(10,18) == "T00:00:0") {
+                keyValue = keyValue.substring(0,10);
+              };
+
               switch (key) {
                 case "propertyTypeSubCode":
                   keyName = "Property Type Sub Code";
@@ -126,6 +132,7 @@ export default {
                   break;
                 case "dealValue":
                   keyName = "Deal Value";
+                  keyValue = "$" + keyValue;
                   break;
                 case "propertyType":
                   keyName = "Property Type";
@@ -136,7 +143,8 @@ export default {
                 case "lob":
                   keyName = "Line Of Business";
                   break;
-              }
+              };
+            
               if (
                 marker.properties[key] != "null" &&
                 marker.properties[key] != ""
@@ -147,7 +155,7 @@ export default {
                   keyName +
                   "</span>" +
                   ": " +
-                  marker.properties[key] +
+                  keyValue +
                   "</h4> ";
               }
             }
