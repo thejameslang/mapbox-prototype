@@ -115,33 +115,40 @@ export default {
 
           var setHTMLString = "";
           for (var key in marker.properties) {
-            var keyName = '';
+            var keyName = "";
             if (marker.properties.hasOwnProperty(key)) {
               switch (key) {
-                case 'propertyTypeSubCode':
-                  keyName = 'Property Type Sub Code';
+                case "propertyTypeSubCode":
+                  keyName = "Property Type Sub Code";
                   break;
-                case 'dayOfClosing':
-                  keyName = 'Day Of Closing';
+                case "dayOfClosing":
+                  keyName = "Day Of Closing";
                   break;
-                case 'dealValue':
-                  keyName = 'Deal Value';
+                case "dealValue":
+                  keyName = "Deal Value";
                   break;
-                case 'propertyType':
-                  keyName = 'Property Type';
+                case "propertyType":
+                  keyName = "Property Type";
                   break;
-                case 'netRentableSqFt':
-                  keyName = 'Net Rentable Square Feet';
+                case "netRentableSqFt":
+                  keyName = "Net Rentable Square Feet";
                   break;
-                case 'lob':
-                  keyName = 'Line Of Business';
+                case "lob":
+                  keyName = "Line Of Business";
                   break;
               }
-              if (marker.properties[key] != 'null' && marker.properties[key] != '') {
+              if (
+                marker.properties[key] != "null" &&
+                marker.properties[key] != ""
+              ) {
                 setHTMLString +=
-                "<h4 class='popup'>" + "<span class='property-detail-key'>" + keyName + "</span>" + ": " +
-                marker.properties[key] +
-                "</h4> ";
+                  "<h4 class='popup'>" +
+                  "<span class='property-detail-key'>" +
+                  keyName +
+                  "</span>" +
+                  ": " +
+                  marker.properties[key] +
+                  "</h4> ";
               }
             }
           }
@@ -203,7 +210,7 @@ export default {
             this.timeTravelYear = 2003;
           }, 2500);
         } else {
-          this.timeTravelYear = this.timeTravelYear + 1;
+          this.timeTravelYear++;
         }
       }, 500);
     }
