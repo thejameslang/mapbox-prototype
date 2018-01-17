@@ -325,6 +325,18 @@ export default {
   .property-detail-key {
     font-weight: bold;
   }
+
+  .mapboxgl-popup-tip, .mapboxgl-popup-content {
+    background: #fff;
+    // border-radius: 0.5em;
+    // padding: 1em 0;
+    text-align: center;
+    text-transform: capitalize;
+    border: 1px solid #00a657;
+    background-color: #eef8f3;
+    color: #1a1a1a;
+  }
+
   #time-travel {
     position: fixed;
     bottom: 0;

@@ -30,6 +30,7 @@ header {
   height: 60px;
   background-color: #000;
   color: #fff;
+  border-bottom: 5px solid #00a657;
   .container {
     display: block;
     // margin: 0 auto;
