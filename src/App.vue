@@ -99,7 +99,7 @@ export default {
           .setLngLat(marker.geometry.coordinates)
           .addTo(map);
 
-        el.addEventListener("mouseover", function(e) {
+        el.addEventListener("click", function(e) {
           // map.flyTo({
           //   center: marker.geometry.coordinates,
           //   zoom: 15
