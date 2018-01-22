@@ -197,7 +197,8 @@ export default {
         this.places = response.data;
       })
       .catch(e => {
-        this.errors.push(e);
+        // this.errors.push(e);
+        HTTP.get("dealgeolocation");
       });
   },
   mounted() {
