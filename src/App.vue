@@ -80,7 +80,9 @@ export default {
       const Geocoder = new MapboxGeocoder({
         accessToken: this.mapObject.accessToken
       });
+      const Draw = new MapboxDraw();
       map.addControl(Geocoder);
+      map.addControl(Draw);
     },
     mapLoaded(map) {
       map.addSource("places", {
@@ -103,7 +105,7 @@ export default {
             break;
         }
         if (!marker.properties["propertyType"]) {
-          console.log('there is a snake in my boots');
+          console.log("there is a snake in my boots");
           el.className += " property-type-unknown";
         }
         switch (marker.properties["propertyType"]) {
@@ -701,7 +703,7 @@ export default {
           }
         }
       }
-    },
+    }
   }
 };
 </script>
