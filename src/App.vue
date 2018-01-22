@@ -142,7 +142,7 @@ export default {
                 case "lob":
                   keyName = "Line Of Business";
                   break;
-              }
+              };
 
               if (
                 marker.properties[key] != "null" &&
@@ -275,11 +275,52 @@ export default {
         var elementsToHide = document.getElementsByClassName("lob-dsf");
         for (var i in elementsToHide) {
           if (elementsToHide.hasOwnProperty(i)) {
-            // elementsToHide[i].classlist.add("hide-lob");
+            elementsToHide[i].classList.add("hide-lob");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("lob-dsf");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-lob");
           }
         }
       }
-    }
+    },
+    isActivePropertySales: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("lob-property-sales");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-lob");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("lob-property-sales");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-lob");
+          }
+        }
+      }
+    },
+    isActiveAssetServices: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("lob-asset-services");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-lob");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("lob-asset-services");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-lob");
+          }
+        }
+      }
+    },
   }
 };
 </script>
@@ -305,8 +346,9 @@ export default {
     display: none;
   }
 
-  .hide-dsf {
-    display: none;
+  .hide-lob {
+    // display: none;
+    opacity: 0 !important;
   }
 
   .marker,
@@ -423,6 +465,7 @@ export default {
       }
     }
     h6 {
+      cursor: pointer;
       margin: 0.25em 0;
       border-radius: 0.5em;
       padding: 0.5em 0.5em 0.75em 0.5em;
