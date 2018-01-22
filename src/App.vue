@@ -12,9 +12,9 @@
       <button v-on:click="playPause = !playPause"><span v-if="!playPause">Play</span><span v-if="playPause">Pause</span></button>
     </div>
     <div class="legend">
-      <h6><div class="marker-legend lob-dsf show-year"></div>DSF</h6>
-      <h6><div class="marker-legend lob-property-sales show-year"></div>Property Sales</h6>
-      <h6><div class="marker-legend lob-asset-services show-year"></div>Asset Services</h6>
+      <h6 v-on:click="isActiveDSF = !isActiveDSF" v-bind:class="{ active: isActiveDSF }"><div class="marker-legend lob-dsf show-year"></div>DSF</h6>
+      <h6 v-on:click="isActivePropertySales = !isActivePropertySales" v-bind:class="{ active: isActivePropertySales }"><div class="marker-legend lob-property-sales show-year"></div>Property Sales</h6>
+      <h6 v-on:click="isActiveAssetServices = !isActiveAssetServices" v-bind:class="{ active: isActiveAssetServices }"><div class="marker-legend lob-asset-services show-year"></div>Asset Services</h6>
     </div>
   </div>
 </template>
@@ -117,11 +117,10 @@ export default {
           for (var key in marker.properties) {
             var keyName = "";
             if (marker.properties.hasOwnProperty(key)) {
-
               var keyValue = marker.properties[key];
-              if (keyValue.substring(10,18) == "T00:00:0") {
-                keyValue = keyValue.substring(0,10);
-              };
+              if (keyValue.substring(10, 18) == "T00:00:0") {
+                keyValue = keyValue.substring(0, 10);
+              }
 
               switch (key) {
                 case "propertyTypeSubCode":
@@ -143,8 +142,8 @@ export default {
                 case "lob":
                   keyName = "Line Of Business";
                   break;
-              };
-            
+              }
+
               if (
                 marker.properties[key] != "null" &&
                 marker.properties[key] != ""
@@ -160,7 +159,6 @@ export default {
               }
             }
           }
-          console.log(setHTMLString);
           popup.setHTML(setHTMLString).addTo(map);
         });
       });
@@ -187,7 +185,10 @@ export default {
       },
       timeTravelYear: 2003,
       errors: [],
-      playPause: false
+      playPause: false,
+      isActiveDSF: true,
+      isActivePropertySales: true,
+      isActiveAssetServices: true
     };
   },
   created() {
@@ -268,6 +269,16 @@ export default {
       //     this.timeTravelYear++;
       //   }
       // }
+    },
+    isActiveDSF: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("lob-dsf");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            // elementsToHide[i].classlist.add("hide-lob");
+          }
+        }
+      }
     }
   }
 };
@@ -291,6 +302,10 @@ export default {
   }
 
   .mapboxgl-ctrl-attrib {
+    display: none;
+  }
+
+  .hide-dsf {
     display: none;
   }
 
@@ -326,7 +341,8 @@ export default {
     font-weight: bold;
   }
 
-  .mapboxgl-popup-tip, .mapboxgl-popup-content {
+  .mapboxgl-popup-tip,
+  .mapboxgl-popup-content {
     background: #fff;
     // border-radius: 0.5em;
     // padding: 1em 0;
@@ -385,14 +401,54 @@ export default {
     position: fixed;
     top: 70px;
     left: 10px;
-    width: 8em;
-    height: 4em;
+    width: auto;
+    height: auto;
     background: #fff;
     border-radius: 0.5em;
     padding: 0.5em;
     text-transform: uppercase;
+    display: block;
+    .marker-legend {
+      background-color: transparent;
+      border-width: 2px;
+      border-style: solid;
+      &.lob-dsf {
+        border-color: #00a657;
+      }
+      &.lob-property-sales {
+        border-color: #af3cf1;
+      }
+      &.lob-asset-services {
+        border-color: #00b2dd;
+      }
+    }
     h6 {
       margin: 0.25em 0;
+      border-radius: 0.5em;
+      padding: 0.5em 0.5em 0.75em 0.5em;
+      border-width: 2px;
+      border-style: solid;
+      border-color: rgba(0,0,0,0);
+      &.active {
+        &:first-child {
+          border-color: #00a657;
+          .marker-legend {
+            background-color: #00a657;
+          }
+        }
+        &:nth-child(2) {
+          border-color: #af3cf1;
+          .marker-legend {
+            background-color: #af3cf1;
+          }
+        }
+        &:last-child {
+          border-color: #00b2dd;
+          .marker-legend {
+            background-color: #00b2dd;
+          }
+        }
+      }
     }
     .marker-legend {
       position: relative;
