@@ -16,6 +16,22 @@
       <h6 v-on:click="isActivePropertySales = !isActivePropertySales" v-bind:class="{ active: isActivePropertySales }"><div class="marker-legend lob-property-sales show-year"></div>Property Sales</h6>
       <h6 v-on:click="isActiveAssetServices = !isActiveAssetServices" v-bind:class="{ active: isActiveAssetServices }"><div class="marker-legend lob-asset-services show-year"></div>Asset Services</h6>
     </div>
+    <div class="filters">
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeApartment"> <h6>Apartment</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeAssistedLiving"> <h6>Assisted Living</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeCondoConstruction"> <h6>Condo - Construction</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeDevSite"> <h6>Dev Site</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeHotel"> <h6>Hotel</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeIndustrial"> <h6>Industrial</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeMiniWarehouse"> <h6>Mini Warehouse</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeMixedUse"> <h6>Mixed Use</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeMultifamily"> <h6>Multifamily</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeOffice"> <h6>Office</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeRetail"> <h6>Retail</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeSeniorsHousingAndCare"> <h6>Seniors Housing &amp; Care</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeSpecialPurpose"> <h6>Special Purpose</h6></div>
+      <div class="filter-row"><input type="checkbox" v-model="propertyTypeUnknown"> <h6>Unknown</h6></div>
+    </div>
   </div>
 </template>
 
@@ -86,6 +102,54 @@ export default {
             el.className += " lob-asset-services";
             break;
         }
+        if (!marker.properties["propertyType"]) {
+          console.log('there is a snake in my boots');
+          el.className += " property-type-unknown";
+        }
+        switch (marker.properties["propertyType"]) {
+          case "Multifamily":
+            el.className += " property-type-multifamily";
+            break;
+          case "Assisted Living":
+            el.className += " property-type-assisted-living";
+            break;
+          case "Mini Warehouse":
+            el.className += " property-type-mini-warehouse";
+            break;
+          case "Industrial":
+            el.className += " property-type-industrial";
+            break;
+          case "Retail":
+            el.className += " property-type-retail";
+            break;
+          case "Office":
+            el.className += " property-type-office";
+            break;
+          case "Hotel":
+            el.className += " property-type-hotel";
+            break;
+          case "Mixed Use":
+            el.className += " property-type-mixed-use";
+            break;
+          case "Condo - Construction":
+            el.className += " property-type-condo-construction";
+            break;
+          case "Special Purpose":
+            el.className += " property-type-special-purpose";
+            break;
+          case "Apartment":
+            el.className += " property-type-apartment";
+            break;
+          case "":
+            el.className += " property-type-unknown";
+            break;
+          case "Dev Site":
+            el.className += " property-type-dev-site";
+            break;
+          case "Seniors Housing & Care":
+            el.className += " property-type-seniors-housing-and-care";
+            break;
+        }
         for (var y = 2000; y < 2018; y++) {
           // if (marker.properties["dayOfClosing"].includes(y.toString())) {
           if (
@@ -142,7 +206,7 @@ export default {
                 case "lob":
                   keyName = "Line Of Business";
                   break;
-              };
+              }
 
               if (
                 marker.properties[key] != "null" &&
@@ -188,7 +252,21 @@ export default {
       playPause: false,
       isActiveDSF: true,
       isActivePropertySales: true,
-      isActiveAssetServices: true
+      isActiveAssetServices: true,
+      propertyTypeApartment: true,
+      propertyTypeAssistedLiving: true,
+      propertyTypeCondoConstruction: true,
+      propertyTypeDevSite: true,
+      propertyTypeHotel: true,
+      propertyTypeIndustrial: true,
+      propertyTypeMiniWarehouse: true,
+      propertyTypeMixedUse: true,
+      propertyTypeMultifamily: true,
+      propertyTypeOffice: true,
+      propertyTypeRetail: true,
+      propertyTypeSeniorsHousingAndCare: true,
+      propertyTypeSpecialPurpose: true,
+      propertyTypeUnknown: true
     };
   },
   created() {
@@ -290,14 +368,18 @@ export default {
     },
     isActivePropertySales: function(val, oldVal) {
       if (val === false) {
-        var elementsToHide = document.getElementsByClassName("lob-property-sales");
+        var elementsToHide = document.getElementsByClassName(
+          "lob-property-sales"
+        );
         for (var i in elementsToHide) {
           if (elementsToHide.hasOwnProperty(i)) {
             elementsToHide[i].classList.add("hide-lob");
           }
         }
       } else if (val === true) {
-        var elementsToShow = document.getElementsByClassName("lob-property-sales");
+        var elementsToShow = document.getElementsByClassName(
+          "lob-property-sales"
+        );
         for (var i in elementsToShow) {
           if (elementsToShow.hasOwnProperty(i)) {
             elementsToShow[i].classList.remove("hide-lob");
@@ -307,17 +389,315 @@ export default {
     },
     isActiveAssetServices: function(val, oldVal) {
       if (val === false) {
-        var elementsToHide = document.getElementsByClassName("lob-asset-services");
+        var elementsToHide = document.getElementsByClassName(
+          "lob-asset-services"
+        );
         for (var i in elementsToHide) {
           if (elementsToHide.hasOwnProperty(i)) {
             elementsToHide[i].classList.add("hide-lob");
           }
         }
       } else if (val === true) {
-        var elementsToShow = document.getElementsByClassName("lob-asset-services");
+        var elementsToShow = document.getElementsByClassName(
+          "lob-asset-services"
+        );
         for (var i in elementsToShow) {
           if (elementsToShow.hasOwnProperty(i)) {
             elementsToShow[i].classList.remove("hide-lob");
+          }
+        }
+      }
+    },
+    propertyTypeApartment: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-apartment"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-apartment"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeAssistedLiving: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-assisted-living"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-assisted-living"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeHotel: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-hotel"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-hotel"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeIndustrial: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-industrial"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-industrial"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeMiniWarehouse: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-mini-warehouse"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-mini-warehouse"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeMixedUse: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-mixed-use"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-mixed-use"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeMultifamily: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-multifamily"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-multifamily"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeOffice: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-office"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-office"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeRetail: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-retail"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-retail"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeCondoConstruction: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-condo-construction"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-condo-construction"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeSpecialPurpose: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-special-purpose"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-special-purpose"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeDevSite: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-dev-site"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-dev-site"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeSeniorsHousingAndCare: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-seniors-housing-and-care"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-seniors-housing-and-care"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeUnknown: function(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName(
+          "property-type-unknown"
+        );
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName(
+          "property-type-unknown"
+        );
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
           }
         }
       }
@@ -347,9 +727,26 @@ export default {
     display: none;
   }
 
-  .hide-lob {
+  .hide-lob,
+  .hide-property-type {
     // display: none;
     opacity: 0 !important;
+  }
+
+  .filters {
+    font-family: sans-serif;
+    text-transform: uppercase;
+    position: fixed;
+    bottom: 150px;
+    left: 10px;
+    width: auto;
+    height: auto;
+    background: #fff;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    h6 {
+      display: inline;
+    }
   }
 
   .marker,
@@ -472,7 +869,7 @@ export default {
       padding: 0.5em 0.5em 0.75em 0.5em;
       border-width: 2px;
       border-style: solid;
-      border-color: rgba(0,0,0,0);
+      border-color: rgba(0, 0, 0, 0);
       &.active {
         &:first-child {
           border-color: #00a657;
