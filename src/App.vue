@@ -6,10 +6,10 @@
             @map-load="mapLoaded"
             >
     </mapbox>
-    <div class="data">
+    <!-- <div class="data">
       <h3>Square Footage</h3>
       <p>{{ animatedSquareFootage }}</p>
-    </div>
+    </div> -->
     <div id="time-travel">
       <h3>Current Year: <span>{{timeTravelYear}}</span></h3>
       <input type="range" min="2003" max="2017" step="1" v-model="timeTravelYear">
