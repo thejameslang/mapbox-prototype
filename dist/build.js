@@ -1134,6 +1134,26 @@ module.exports = function normalizeComponent (
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1171,7 +1191,9 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
       var Geocoder = new MapboxGeocoder({
         accessToken: this.mapObject.accessToken
       });
+      var Draw = new MapboxDraw();
       map.addControl(Geocoder);
+      map.addControl(Draw);
     },
     mapLoaded: function mapLoaded(map) {
       map.addSource("places", {
@@ -1191,6 +1213,54 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
             break;
           case "AS":
             el.className += " lob-asset-services";
+            break;
+        }
+        if (!marker.properties["propertyType"]) {
+          console.log("there is a snake in my boots");
+          el.className += " property-type-unknown";
+        }
+        switch (marker.properties["propertyType"]) {
+          case "Multifamily":
+            el.className += " property-type-multifamily";
+            break;
+          case "Assisted Living":
+            el.className += " property-type-assisted-living";
+            break;
+          case "Mini Warehouse":
+            el.className += " property-type-mini-warehouse";
+            break;
+          case "Industrial":
+            el.className += " property-type-industrial";
+            break;
+          case "Retail":
+            el.className += " property-type-retail";
+            break;
+          case "Office":
+            el.className += " property-type-office";
+            break;
+          case "Hotel":
+            el.className += " property-type-hotel";
+            break;
+          case "Mixed Use":
+            el.className += " property-type-mixed-use";
+            break;
+          case "Condo - Construction":
+            el.className += " property-type-condo-construction";
+            break;
+          case "Special Purpose":
+            el.className += " property-type-special-purpose";
+            break;
+          case "Apartment":
+            el.className += " property-type-apartment";
+            break;
+          case "":
+            el.className += " property-type-unknown";
+            break;
+          case "Dev Site":
+            el.className += " property-type-dev-site";
+            break;
+          case "Seniors Housing & Care":
+            el.className += " property-type-seniors-housing-and-care";
             break;
         }
         for (var y = 2000; y < 2018; y++) {
@@ -1220,11 +1290,10 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
           for (var key in marker.properties) {
             var keyName = "";
             if (marker.properties.hasOwnProperty(key)) {
-
               var keyValue = marker.properties[key];
               if (keyValue.substring(10, 18) == "T00:00:0") {
                 keyValue = keyValue.substring(0, 10);
-              };
+              }
 
               switch (key) {
                 case "propertyTypeSubCode":
@@ -1242,18 +1311,19 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
                   break;
                 case "netRentableSqFt":
                   keyName = "Net Rentable Square Feet";
+                  this.squareFootage = keyValue;
+                  console.log(this.squareFootage);
                   break;
                 case "lob":
                   keyName = "Line Of Business";
                   break;
-              };
+              }
 
               if (marker.properties[key] != "null" && marker.properties[key] != "") {
                 setHTMLString += "<h4 class='popup'>" + "<span class='property-detail-key'>" + keyName + "</span>" + ": " + keyValue + "</h4> ";
               }
             }
           }
-          console.log(setHTMLString);
           popup.setHTML(setHTMLString).addTo(map);
         });
       });
@@ -1276,9 +1346,28 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
         type: "FeatureCollection",
         features: []
       },
+      squareFootage: 354632,
+      animatedSquareFootage: 354632,
       timeTravelYear: 2003,
       errors: [],
-      playPause: false
+      playPause: false,
+      isActiveDSF: true,
+      isActivePropertySales: true,
+      isActiveAssetServices: true,
+      propertyTypeApartment: true,
+      propertyTypeAssistedLiving: true,
+      propertyTypeCondoConstruction: true,
+      propertyTypeDevSite: true,
+      propertyTypeHotel: true,
+      propertyTypeIndustrial: true,
+      propertyTypeMiniWarehouse: true,
+      propertyTypeMixedUse: true,
+      propertyTypeMultifamily: true,
+      propertyTypeOffice: true,
+      propertyTypeRetail: true,
+      propertyTypeSeniorsHousingAndCare: true,
+      propertyTypeSpecialPurpose: true,
+      propertyTypeUnknown: true
     };
   },
   created: function created() {
@@ -1287,7 +1376,8 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
     HTTP.get("dealgeolocation").then(function (response) {
       _this.places = response.data;
     }).catch(function (e) {
-      _this.errors.push(e);
+      // this.errors.push(e);
+      HTTP.get("dealgeolocation");
     });
   },
   mounted: function mounted() {
@@ -1362,6 +1452,310 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
       //     this.timeTravelYear++;
       //   }
       // }
+    },
+    isActiveDSF: function isActiveDSF(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("lob-dsf");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-lob");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("lob-dsf");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-lob");
+          }
+        }
+      }
+    },
+    isActivePropertySales: function isActivePropertySales(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("lob-property-sales");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-lob");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("lob-property-sales");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-lob");
+          }
+        }
+      }
+    },
+    isActiveAssetServices: function isActiveAssetServices(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("lob-asset-services");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-lob");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("lob-asset-services");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-lob");
+          }
+        }
+      }
+    },
+    propertyTypeApartment: function propertyTypeApartment(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-apartment");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-apartment");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeAssistedLiving: function propertyTypeAssistedLiving(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-assisted-living");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-assisted-living");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeHotel: function propertyTypeHotel(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-hotel");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-hotel");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeIndustrial: function propertyTypeIndustrial(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-industrial");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-industrial");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeMiniWarehouse: function propertyTypeMiniWarehouse(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-mini-warehouse");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-mini-warehouse");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeMixedUse: function propertyTypeMixedUse(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-mixed-use");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-mixed-use");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeMultifamily: function propertyTypeMultifamily(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-multifamily");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-multifamily");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeOffice: function propertyTypeOffice(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-office");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-office");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeRetail: function propertyTypeRetail(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-retail");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-retail");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeCondoConstruction: function propertyTypeCondoConstruction(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-condo-construction");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-condo-construction");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeSpecialPurpose: function propertyTypeSpecialPurpose(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-special-purpose");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-special-purpose");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeDevSite: function propertyTypeDevSite(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-dev-site");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-dev-site");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeSeniorsHousingAndCare: function propertyTypeSeniorsHousingAndCare(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-seniors-housing-and-care");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-seniors-housing-and-care");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    propertyTypeUnknown: function propertyTypeUnknown(val, oldVal) {
+      if (val === false) {
+        var elementsToHide = document.getElementsByClassName("property-type-unknown");
+        for (var i in elementsToHide) {
+          if (elementsToHide.hasOwnProperty(i)) {
+            elementsToHide[i].classList.add("hide-property-type");
+          }
+        }
+      } else if (val === true) {
+        var elementsToShow = document.getElementsByClassName("property-type-unknown");
+        for (var i in elementsToShow) {
+          if (elementsToShow.hasOwnProperty(i)) {
+            elementsToShow[i].classList.remove("hide-property-type");
+          }
+        }
+      }
+    },
+    squareFootage: function squareFootage(newValue, oldValue) {
+      var vm = this;
+      function animate() {
+        if (TWEEN.update()) {
+          console.log(this.animatedSquareFootage);
+          requestAnimationFrame(animate);
+        }
+      }
+
+      new TWEEN.Tween({ tweeningNumber: oldValue }).easing(TWEEN.Easing.Quadratic.Out).to({ tweeningNumber: newValue }, 500).onUpdate(function () {
+        vm.animatedSquareFootage = this.tweeningNumber.toFixed(0);
+      }).start();
+
+      animate();
     }
   }
 });
@@ -13328,7 +13722,7 @@ exports.clearImmediate = clearImmediate;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(7);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3ddd1a5f_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4e9989f4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(47);
 function injectStyle (ssrContext) {
   __webpack_require__(20)
 }
@@ -13348,7 +13742,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3ddd1a5f_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_4e9989f4_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -13369,7 +13763,7 @@ var content = __webpack_require__(21);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("2dd102a1", content, true);
+var update = __webpack_require__(5)("b5a3cfe2", content, true);
 
 /***/ }),
 /* 21 */
@@ -13380,7 +13774,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app .mapboxgl-ctrl-group {\n    margin: 20px 10px 0;\n}\n#app .mapboxgl-ctrl-attrib {\n    display: none;\n}\n#app .marker,\n  #app .marker-legend {\n    opacity: 0;\n    border: none;\n    cursor: pointer;\n    height: 15px;\n    width: 15px;\n    border-radius: 50%;\n    transition: opacity 0.5s;\n}\n#app .marker.lob-dsf,\n    #app .marker-legend.lob-dsf {\n      background-color: #00a657;\n}\n#app .marker.lob-property-sales,\n    #app .marker-legend.lob-property-sales {\n      background-color: #af3cf1;\n}\n#app .marker.lob-asset-services,\n    #app .marker-legend.lob-asset-services {\n      background-color: #00b2dd;\n}\n#app .show-year {\n    opacity: 0.5;\n}\n#app .popup {\n    font-weight: normal;\n}\n#app .property-detail-key {\n    font-weight: bold;\n}\n#app .mapboxgl-popup-tip, #app .mapboxgl-popup-content {\n    background: #fff;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    width: 100%;\n    height: auto;\n    background: #fff;\n    padding: 1em 0;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel h3 {\n      margin: 0;\n      font-size: 0.875rem;\n      line-height: 1.2;\n      color: #1a1a1a;\n      margin-bottom: 1em;\n}\n#app #time-travel h3 span {\n        color: #5a5e64;\n}\n#app #time-travel input {\n      display: block;\n      width: 90%;\n      margin: 0 1em;\n}\n#app #time-travel button {\n      cursor: pointer;\n      padding: 0.625rem;\n      border: none;\n      font-size: 0.875rem;\n      font-weight: 700;\n      color: #fff;\n      background-color: #00a657;\n      border-radius: 0.125rem;\n      margin-top: 1em;\n      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n      text-decoration: none;\n}\n#app .legend {\n    position: fixed;\n    top: 70px;\n    left: 10px;\n    width: 8em;\n    height: 4em;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 0.5em;\n    text-transform: uppercase;\n}\n#app .legend h6 {\n      margin: 0.25em 0;\n}\n#app .legend .marker-legend {\n      position: relative;\n      top: 3px;\n      margin-right: 1em;\n      display: inline-block;\n      opacity: 1;\n}\n", ""]);
+exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app .mapboxgl-ctrl-group {\n    margin: 20px 10px 0;\n}\n#app .mapboxgl-ctrl-attrib {\n    display: none;\n}\n#app .hide-lob,\n  #app .hide-property-type {\n    opacity: 0 !important;\n}\n#app .filters {\n    font-family: sans-serif;\n    text-transform: uppercase;\n    position: fixed;\n    bottom: 150px;\n    left: 10px;\n    width: auto;\n    height: auto;\n    background: #fff;\n    padding: 0.5em;\n    border-radius: 0.5em;\n}\n#app .filters h6 {\n      display: inline;\n}\n#app .marker,\n  #app .marker-legend {\n    opacity: 0;\n    border: none;\n    cursor: pointer;\n    height: 15px;\n    width: 15px;\n    border-radius: 50%;\n    transition: opacity 0.5s;\n}\n#app .marker.lob-dsf,\n    #app .marker-legend.lob-dsf {\n      background-color: #00a657;\n}\n#app .marker.lob-property-sales,\n    #app .marker-legend.lob-property-sales {\n      background-color: #af3cf1;\n}\n#app .marker.lob-asset-services,\n    #app .marker-legend.lob-asset-services {\n      background-color: #00b2dd;\n}\n#app .show-year {\n    opacity: 0.5;\n}\n#app .popup {\n    font-weight: normal;\n}\n#app .property-detail-key {\n    font-weight: bold;\n}\n#app .mapboxgl-popup-tip,\n  #app .mapboxgl-popup-content {\n    background: #fff;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    width: 100%;\n    height: auto;\n    background: #fff;\n    padding: 1em 0;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel h3 {\n      margin: 0;\n      font-size: 0.875rem;\n      line-height: 1.2;\n      color: #1a1a1a;\n      margin-bottom: 1em;\n}\n#app #time-travel h3 span {\n        color: #5a5e64;\n}\n#app #time-travel input {\n      display: block;\n      width: 90%;\n      margin: 0 1em;\n}\n#app #time-travel button {\n      cursor: pointer;\n      padding: 0.625rem;\n      border: none;\n      font-size: 0.875rem;\n      font-weight: 700;\n      color: #fff;\n      background-color: #00a657;\n      border-radius: 0.125rem;\n      margin-top: 1em;\n      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n      text-decoration: none;\n}\n#app .data {\n    text-align: center;\n    position: fixed;\n    bottom: 150px;\n    right: 10px;\n    width: auto;\n    height: auto;\n    background: #FFF;\n}\n#app .legend {\n    position: fixed;\n    top: 70px;\n    left: 10px;\n    width: auto;\n    height: auto;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 0.5em;\n    text-transform: uppercase;\n    display: block;\n}\n#app .legend .marker-legend {\n      background-color: transparent;\n      border-width: 2px;\n      border-style: solid;\n}\n#app .legend .marker-legend.lob-dsf {\n        border-color: #00a657;\n}\n#app .legend .marker-legend.lob-property-sales {\n        border-color: #af3cf1;\n}\n#app .legend .marker-legend.lob-asset-services {\n        border-color: #00b2dd;\n}\n#app .legend h6 {\n      cursor: pointer;\n      margin: 0.25em 0;\n      border-radius: 0.5em;\n      padding: 0.5em 0.5em 0.75em 0.5em;\n      border-width: 2px;\n      border-style: solid;\n      border-color: transparent;\n}\n#app .legend h6.active:first-child {\n        border-color: #00a657;\n}\n#app .legend h6.active:first-child .marker-legend {\n          background-color: #00a657;\n}\n#app .legend h6.active:nth-child(2) {\n        border-color: #af3cf1;\n}\n#app .legend h6.active:nth-child(2) .marker-legend {\n          background-color: #af3cf1;\n}\n#app .legend h6.active:last-child {\n        border-color: #00b2dd;\n}\n#app .legend h6.active:last-child .marker-legend {\n          background-color: #00b2dd;\n}\n#app .legend .marker-legend {\n      position: relative;\n      top: 3px;\n      margin-right: 1em;\n      display: inline-block;\n      opacity: 1;\n}\n", ""]);
 
 // exports
 
@@ -15002,8 +15396,8 @@ module.exports = function spread(callback) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[_c('Header'),_vm._v(" "),_c('mapbox',_vm._b({on:{"map-init":_vm.mapInitialized,"map-load":_vm.mapLoaded}},'mapbox',_vm.mapObject,false)),_vm._v(" "),_c('div',{attrs:{"id":"time-travel"}},[_c('h3',[_vm._v("Current Year: "),_c('span',[_vm._v(_vm._s(_vm.timeTravelYear))])]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.timeTravelYear),expression:"timeTravelYear"}],attrs:{"type":"range","min":"2003","max":"2017","step":"1"},domProps:{"value":(_vm.timeTravelYear)},on:{"__r":function($event){_vm.timeTravelYear=$event.target.value}}}),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.playPause = !_vm.playPause}}},[(!_vm.playPause)?_c('span',[_vm._v("Play")]):_vm._e(),(_vm.playPause)?_c('span',[_vm._v("Pause")]):_vm._e()])]),_vm._v(" "),_vm._m(0)],1)}
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"legend"},[_c('h6',[_c('div',{staticClass:"marker-legend lob-dsf show-year"}),_vm._v("DSF")]),_vm._v(" "),_c('h6',[_c('div',{staticClass:"marker-legend lob-property-sales show-year"}),_vm._v("Property Sales")]),_vm._v(" "),_c('h6',[_c('div',{staticClass:"marker-legend lob-asset-services show-year"}),_vm._v("Asset Services")])])}]
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[_c('Header'),_vm._v(" "),_c('mapbox',_vm._b({on:{"map-init":_vm.mapInitialized,"map-load":_vm.mapLoaded}},'mapbox',_vm.mapObject,false)),_vm._v(" "),_c('div',{staticClass:"data"},[_c('h3',[_vm._v("Square Footage")]),_vm._v(" "),_c('p',[_vm._v(_vm._s(_vm.animatedSquareFootage))])]),_vm._v(" "),_c('div',{attrs:{"id":"time-travel"}},[_c('h3',[_vm._v("Current Year: "),_c('span',[_vm._v(_vm._s(_vm.timeTravelYear))])]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.timeTravelYear),expression:"timeTravelYear"}],attrs:{"type":"range","min":"2003","max":"2017","step":"1"},domProps:{"value":(_vm.timeTravelYear)},on:{"__r":function($event){_vm.timeTravelYear=$event.target.value}}}),_vm._v(" "),_c('button',{on:{"click":function($event){_vm.playPause = !_vm.playPause}}},[(!_vm.playPause)?_c('span',[_vm._v("Play")]):_vm._e(),(_vm.playPause)?_c('span',[_vm._v("Pause")]):_vm._e()])]),_vm._v(" "),_c('div',{staticClass:"legend"},[_c('h6',{class:{ active: _vm.isActiveDSF },on:{"click":function($event){_vm.isActiveDSF = !_vm.isActiveDSF}}},[_c('div',{staticClass:"marker-legend lob-dsf show-year"}),_vm._v("DSF")]),_vm._v(" "),_c('h6',{class:{ active: _vm.isActivePropertySales },on:{"click":function($event){_vm.isActivePropertySales = !_vm.isActivePropertySales}}},[_c('div',{staticClass:"marker-legend lob-property-sales show-year"}),_vm._v("Property Sales")]),_vm._v(" "),_c('h6',{class:{ active: _vm.isActiveAssetServices },on:{"click":function($event){_vm.isActiveAssetServices = !_vm.isActiveAssetServices}}},[_c('div',{staticClass:"marker-legend lob-asset-services show-year"}),_vm._v("Asset Services")])]),_vm._v(" "),_c('div',{staticClass:"filters"},[_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeApartment),expression:"propertyTypeApartment"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeApartment)?_vm._i(_vm.propertyTypeApartment,null)>-1:(_vm.propertyTypeApartment)},on:{"change":function($event){var $$a=_vm.propertyTypeApartment,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeApartment=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeApartment=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeApartment=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Apartment")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeAssistedLiving),expression:"propertyTypeAssistedLiving"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeAssistedLiving)?_vm._i(_vm.propertyTypeAssistedLiving,null)>-1:(_vm.propertyTypeAssistedLiving)},on:{"change":function($event){var $$a=_vm.propertyTypeAssistedLiving,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeAssistedLiving=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeAssistedLiving=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeAssistedLiving=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Assisted Living")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeCondoConstruction),expression:"propertyTypeCondoConstruction"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeCondoConstruction)?_vm._i(_vm.propertyTypeCondoConstruction,null)>-1:(_vm.propertyTypeCondoConstruction)},on:{"change":function($event){var $$a=_vm.propertyTypeCondoConstruction,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeCondoConstruction=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeCondoConstruction=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeCondoConstruction=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Condo - Construction")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeDevSite),expression:"propertyTypeDevSite"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeDevSite)?_vm._i(_vm.propertyTypeDevSite,null)>-1:(_vm.propertyTypeDevSite)},on:{"change":function($event){var $$a=_vm.propertyTypeDevSite,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeDevSite=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeDevSite=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeDevSite=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Dev Site")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeHotel),expression:"propertyTypeHotel"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeHotel)?_vm._i(_vm.propertyTypeHotel,null)>-1:(_vm.propertyTypeHotel)},on:{"change":function($event){var $$a=_vm.propertyTypeHotel,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeHotel=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeHotel=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeHotel=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Hotel")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeIndustrial),expression:"propertyTypeIndustrial"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeIndustrial)?_vm._i(_vm.propertyTypeIndustrial,null)>-1:(_vm.propertyTypeIndustrial)},on:{"change":function($event){var $$a=_vm.propertyTypeIndustrial,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeIndustrial=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeIndustrial=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeIndustrial=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Industrial")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeMiniWarehouse),expression:"propertyTypeMiniWarehouse"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeMiniWarehouse)?_vm._i(_vm.propertyTypeMiniWarehouse,null)>-1:(_vm.propertyTypeMiniWarehouse)},on:{"change":function($event){var $$a=_vm.propertyTypeMiniWarehouse,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeMiniWarehouse=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeMiniWarehouse=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeMiniWarehouse=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Mini Warehouse")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeMixedUse),expression:"propertyTypeMixedUse"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeMixedUse)?_vm._i(_vm.propertyTypeMixedUse,null)>-1:(_vm.propertyTypeMixedUse)},on:{"change":function($event){var $$a=_vm.propertyTypeMixedUse,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeMixedUse=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeMixedUse=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeMixedUse=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Mixed Use")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeMultifamily),expression:"propertyTypeMultifamily"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeMultifamily)?_vm._i(_vm.propertyTypeMultifamily,null)>-1:(_vm.propertyTypeMultifamily)},on:{"change":function($event){var $$a=_vm.propertyTypeMultifamily,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeMultifamily=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeMultifamily=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeMultifamily=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Multifamily")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeOffice),expression:"propertyTypeOffice"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeOffice)?_vm._i(_vm.propertyTypeOffice,null)>-1:(_vm.propertyTypeOffice)},on:{"change":function($event){var $$a=_vm.propertyTypeOffice,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeOffice=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeOffice=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeOffice=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Office")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeRetail),expression:"propertyTypeRetail"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeRetail)?_vm._i(_vm.propertyTypeRetail,null)>-1:(_vm.propertyTypeRetail)},on:{"change":function($event){var $$a=_vm.propertyTypeRetail,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeRetail=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeRetail=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeRetail=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Retail")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeSeniorsHousingAndCare),expression:"propertyTypeSeniorsHousingAndCare"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeSeniorsHousingAndCare)?_vm._i(_vm.propertyTypeSeniorsHousingAndCare,null)>-1:(_vm.propertyTypeSeniorsHousingAndCare)},on:{"change":function($event){var $$a=_vm.propertyTypeSeniorsHousingAndCare,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeSeniorsHousingAndCare=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeSeniorsHousingAndCare=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeSeniorsHousingAndCare=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Seniors Housing & Care")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeSpecialPurpose),expression:"propertyTypeSpecialPurpose"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeSpecialPurpose)?_vm._i(_vm.propertyTypeSpecialPurpose,null)>-1:(_vm.propertyTypeSpecialPurpose)},on:{"change":function($event){var $$a=_vm.propertyTypeSpecialPurpose,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeSpecialPurpose=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeSpecialPurpose=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeSpecialPurpose=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Special Purpose")])]),_vm._v(" "),_c('div',{staticClass:"filter-row"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.propertyTypeUnknown),expression:"propertyTypeUnknown"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.propertyTypeUnknown)?_vm._i(_vm.propertyTypeUnknown,null)>-1:(_vm.propertyTypeUnknown)},on:{"change":function($event){var $$a=_vm.propertyTypeUnknown,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.propertyTypeUnknown=$$a.concat([$$v]))}else{$$i>-1&&(_vm.propertyTypeUnknown=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.propertyTypeUnknown=$$c}}}}),_vm._v(" "),_c('h6',[_vm._v("Unknown")])])])],1)}
+var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
 
