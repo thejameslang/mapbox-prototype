@@ -6,6 +6,10 @@
             @map-load="mapLoaded"
             >
     </mapbox>
+    <div class="data">
+      <h3>Square Footage</h3>
+      <p>{{ animatedSquareFootage }}</p>
+    </div>
     <div id="time-travel">
       <h3>Current Year: <span>{{timeTravelYear}}</span></h3>
       <input type="range" min="2003" max="2017" step="1" v-model="timeTravelYear">
@@ -204,6 +208,8 @@ export default {
                   break;
                 case "netRentableSqFt":
                   keyName = "Net Rentable Square Feet";
+                  this.squareFootage = keyValue;
+                  console.log(this.squareFootage);
                   break;
                 case "lob":
                   keyName = "Line Of Business";
@@ -249,6 +255,8 @@ export default {
         type: "FeatureCollection",
         features: []
       },
+      squareFootage: 354632,
+      animatedSquareFootage: 354632,
       timeTravelYear: 2003,
       errors: [],
       playPause: false,
@@ -703,6 +711,25 @@ export default {
           }
         }
       }
+    },
+    squareFootage: function(newValue, oldValue) {
+      var vm = this
+      function animate () {
+        if (TWEEN.update()) {
+        console.log(this.animatedSquareFootage);
+          requestAnimationFrame(animate)
+        }
+      }
+
+      new TWEEN.Tween({ tweeningNumber: oldValue })
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .to({ tweeningNumber: newValue }, 500)
+        .onUpdate(function () {
+          vm.animatedSquareFootage = this.tweeningNumber.toFixed(0)
+        })
+        .start()
+
+      animate()
     }
   }
 };
@@ -838,6 +865,15 @@ export default {
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
       text-decoration: none;
     }
+  }
+  .data {
+    text-align: center;
+    position: fixed;
+    bottom: 150px;
+    right: 10px;
+    width: auto;
+    height: auto;
+    background: #FFF;
   }
   .legend {
     position: fixed;
