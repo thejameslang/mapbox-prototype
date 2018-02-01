@@ -242,7 +242,9 @@ export default {
                   keyName = "Net Rentable Square Feet";
                   this.squareFootage = keyValue;
                   netRentableSqFtName = keyName;
-                  netRentableSqFtValue = Number(keyValue).toLocaleString();
+                  if (keyValue != "") {
+                    netRentableSqFtValue = Number(keyValue).toLocaleString();
+                  }
                   break;
                 case "lob":
                   keyName = "Line Of Business";
