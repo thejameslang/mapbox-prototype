@@ -1287,6 +1287,18 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
           }).setLngLat(marker.geometry.coordinates);
 
           var setHTMLString = "";
+          var propertyTypeSubCodeName = "";
+          var propertyTypeSubCodeValue = "";
+          var dayOfClosingName = "";
+          var dayOfClosingValue = "";
+          var dealValueName = "";
+          var dealValueValue = "";
+          var propertyTypeName = "";
+          var propertyTypeValue = "";
+          var netRentableSqFtName = "";
+          var netRentableSqFtValue = "";
+          var lobName = "";
+          var lobValue = "";
           for (var key in marker.properties) {
             var keyName = "";
             if (marker.properties.hasOwnProperty(key)) {
@@ -1295,34 +1307,76 @@ var HTTP = __WEBPACK_IMPORTED_MODULE_2_axios___default.a.create({
                 keyValue = keyValue.substring(0, 10);
               }
 
+              if (keyValue.toLowerCase() === "null") {
+                keyValue = "";
+              }
+
+              if (marker.properties[key] === "null") {
+                marker.properties[key] = "";
+              }
+
               switch (key) {
                 case "propertyTypeSubCode":
                   keyName = "Property Type Sub Code";
+                  propertyTypeSubCodeName = keyName;
+                  propertyTypeSubCodeValue = keyValue;
                   break;
                 case "dayOfClosing":
                   keyName = "Day Of Closing";
+                  dayOfClosingName = keyName;
+                  dayOfClosingValue = keyValue;
                   break;
                 case "dealValue":
                   keyName = "Deal Value";
-                  keyValue = "$" + keyValue;
+                  if (keyValue === "") {
+                    keyValue = "";
+                  } else {
+                    keyValue = "$" + Number(keyValue).toLocaleString();
+                  }
+                  dealValueName = keyName;
+                  dealValueValue = keyValue;
                   break;
                 case "propertyType":
                   keyName = "Property Type";
+                  propertyTypeName = keyName;
+                  propertyTypeValue = keyValue;
                   break;
                 case "netRentableSqFt":
                   keyName = "Net Rentable Square Feet";
                   this.squareFootage = keyValue;
-                  console.log(this.squareFootage);
+                  netRentableSqFtName = keyName;
+                  if (keyValue != "") {
+                    netRentableSqFtValue = Number(keyValue).toLocaleString();
+                  }
                   break;
                 case "lob":
                   keyName = "Line Of Business";
+                  lobName = keyName;
+                  if (keyValue === "AS") {
+                    keyValue = "Asset Services";
+                  }
+                  lobValue = keyValue;
                   break;
               }
-
-              if (marker.properties[key] != "null" && marker.properties[key] != "") {
-                setHTMLString += "<h4 class='popup'>" + "<span class='property-detail-key'>" + keyName + "</span>" + ": " + keyValue + "</h4> ";
-              }
             }
+          }
+          if (lobValue != "") {
+            setHTMLString += "<h4 class='popup'>" + "<span class='property-detail-key'>" + lobName + "</span>" + ": " + lobValue + "</h4> ";
+          }
+          if (propertyTypeValue != "") {
+            setHTMLString += "<h4 class='popup'>" + "<span class='property-detail-key'>" + propertyTypeName + "</span>" + ": " + propertyTypeValue + "</h4> ";
+          }
+          if (propertyTypeSubCodeValue != "") {
+            setHTMLString += "<h4 class='popup'>" + "<span class='property-detail-key'>" + propertyTypeSubCodeName + "</span>" + ": " + propertyTypeSubCodeValue + "</h4> ";
+          }
+          if (dealValueValue != "") {
+            setHTMLString += "<h4 class='popup'>" + "<span class='property-detail-key'>" + dealValueName + "</span>" + ": " + dealValueValue + "</h4> ";
+          }
+          if (dayOfClosingValue != "") {
+            setHTMLString += "<h4 class='popup'>" + "<span class='property-detail-key'>" + dayOfClosingName + "</span>" + ": " + dayOfClosingValue + "</h4> ";
+          }
+          if (netRentableSqFtValue != "") {
+            setHTMLString += "<h4 class='popup'>" + "<span class='property-detail-key'>" + netRentableSqFtName + "</span>" + ": " + netRentableSqFtValue + "</h4> ";
           }
           popup.setHTML(setHTMLString).addTo(map);
         });
@@ -13722,7 +13776,7 @@ exports.clearImmediate = clearImmediate;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(7);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_75143570_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_02d7800c_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(47);
 function injectStyle (ssrContext) {
   __webpack_require__(20)
 }
@@ -13742,7 +13796,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_75143570_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_02d7800c_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -13763,7 +13817,7 @@ var content = __webpack_require__(21);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("3c36532a", content, true);
+var update = __webpack_require__(5)("75f9cba2", content, true);
 
 /***/ }),
 /* 21 */
@@ -13774,7 +13828,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app h4.popup {\n    text-align: left;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app .mapboxgl-ctrl-group {\n    margin: 20px 10px 0;\n}\n#app .mapboxgl-ctrl-attrib {\n    display: none;\n}\n#app .hide-lob,\n  #app .hide-property-type {\n    opacity: 0 !important;\n}\n#app .filters {\n    font-family: sans-serif;\n    text-transform: uppercase;\n    position: fixed;\n    bottom: 150px;\n    left: 10px;\n    width: auto;\n    height: auto;\n    background: #fff;\n    padding: 0.5em;\n    border-radius: 0.5em;\n}\n#app .filters h6 {\n      display: inline;\n}\n#app .marker,\n  #app .marker-legend {\n    opacity: 0;\n    border: none;\n    cursor: pointer;\n    height: 15px;\n    width: 15px;\n    border-radius: 50%;\n    transition: opacity 0.5s;\n}\n#app .marker.lob-dsf,\n    #app .marker-legend.lob-dsf {\n      background-color: #00a657;\n}\n#app .marker.lob-property-sales,\n    #app .marker-legend.lob-property-sales {\n      background-color: #af3cf1;\n}\n#app .marker.lob-asset-services,\n    #app .marker-legend.lob-asset-services {\n      background-color: #00b2dd;\n}\n#app .show-year {\n    opacity: 0.5;\n}\n#app .popup {\n    font-weight: normal;\n}\n#app .property-detail-key {\n    font-weight: bold;\n}\n#app .mapboxgl-popup-tip,\n  #app .mapboxgl-popup-content {\n    background: #fff;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    width: 100%;\n    height: auto;\n    background: #fff;\n    padding: 1em 0;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel h3 {\n      margin: 0;\n      font-size: 0.875rem;\n      line-height: 1.2;\n      color: #1a1a1a;\n      margin-bottom: 1em;\n}\n#app #time-travel h3 span {\n        color: #5a5e64;\n}\n#app #time-travel input {\n      display: block;\n      width: 90%;\n      margin: 0 1em;\n}\n#app #time-travel button {\n      cursor: pointer;\n      padding: 0.625rem;\n      border: none;\n      font-size: 0.875rem;\n      font-weight: 700;\n      color: #fff;\n      background-color: #00a657;\n      border-radius: 0.125rem;\n      margin-top: 1em;\n      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n      text-decoration: none;\n}\n#app .data {\n    text-align: center;\n    position: fixed;\n    bottom: 150px;\n    right: 10px;\n    width: auto;\n    height: auto;\n    background: #FFF;\n}\n#app .legend {\n    position: fixed;\n    top: 70px;\n    left: 10px;\n    width: auto;\n    height: auto;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 0.5em;\n    text-transform: uppercase;\n    display: block;\n}\n#app .legend .marker-legend {\n      background-color: transparent;\n      border-width: 2px;\n      border-style: solid;\n}\n#app .legend .marker-legend.lob-dsf {\n        border-color: #00a657;\n}\n#app .legend .marker-legend.lob-property-sales {\n        border-color: #af3cf1;\n}\n#app .legend .marker-legend.lob-asset-services {\n        border-color: #00b2dd;\n}\n#app .legend h6 {\n      cursor: pointer;\n      margin: 0.25em 0;\n      border-radius: 0.5em;\n      padding: 0.5em 0.5em 0.75em 0.5em;\n      border-width: 2px;\n      border-style: solid;\n      border-color: transparent;\n}\n#app .legend h6.active:first-child {\n        border-color: #00a657;\n}\n#app .legend h6.active:first-child .marker-legend {\n          background-color: #00a657;\n}\n#app .legend h6.active:nth-child(2) {\n        border-color: #af3cf1;\n}\n#app .legend h6.active:nth-child(2) .marker-legend {\n          background-color: #af3cf1;\n}\n#app .legend h6.active:last-child {\n        border-color: #00b2dd;\n}\n#app .legend h6.active:last-child .marker-legend {\n          background-color: #00b2dd;\n}\n#app .legend .marker-legend {\n      position: relative;\n      top: 3px;\n      margin-right: 1em;\n      display: inline-block;\n      opacity: 1;\n}\n", ""]);
+exports.push([module.i, "\n#app {\n  font-family: sans-serif;\n}\n#app h4.popup {\n    text-align: left;\n}\n#app #map {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    width: 100%;\n}\n#app #map .mapboxgl-ctrl-logo {\n      display: none;\n}\n#app .mapboxgl-ctrl-group {\n    margin: 20px 10px 0;\n}\n#app .mapboxgl-ctrl-attrib {\n    display: none;\n}\n#app .hide-lob,\n  #app .hide-property-type {\n    opacity: 0 !important;\n}\n#app .filters {\n    font-family: sans-serif;\n    text-transform: uppercase;\n    position: fixed;\n    bottom: 150px;\n    left: 10px;\n    width: auto;\n    height: auto;\n    background: #fff;\n    padding: 0.5em;\n    border-radius: 0.5em;\n}\n#app .filters h6 {\n      display: inline;\n}\n#app .marker,\n  #app .marker-legend {\n    opacity: 0;\n    border: none;\n    cursor: pointer;\n    height: 15px;\n    width: 15px;\n    border-radius: 50%;\n    transition: opacity 0.5s;\n}\n#app .marker.lob-dsf,\n    #app .marker-legend.lob-dsf {\n      background-color: #00a657;\n}\n#app .marker.lob-property-sales,\n    #app .marker-legend.lob-property-sales {\n      background-color: #af3cf1;\n}\n#app .marker.lob-asset-services,\n    #app .marker-legend.lob-asset-services {\n      background-color: #00b2dd;\n}\n#app .show-year {\n    opacity: 0.5;\n}\n#app .popup {\n    font-weight: normal;\n}\n#app .property-detail-key {\n    font-weight: bold;\n}\n#app .mapboxgl-popup-tip,\n  #app .mapboxgl-popup-content {\n    background: #fff;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    width: 100%;\n    height: auto;\n    background: #fff;\n    padding: 1em 0;\n    text-align: center;\n    text-transform: capitalize;\n    border: 1px solid #00a657;\n    background-color: #eef8f3;\n    color: #1a1a1a;\n}\n#app #time-travel h3 {\n      margin: 0;\n      font-size: 0.875rem;\n      line-height: 1.2;\n      color: #1a1a1a;\n      margin-bottom: 1em;\n}\n#app #time-travel h3 span {\n        color: #5a5e64;\n}\n#app #time-travel input {\n      display: block;\n      width: 90%;\n      margin: 0 1em;\n}\n#app #time-travel button {\n      cursor: pointer;\n      padding: 0.625rem;\n      border: none;\n      font-size: 0.875rem;\n      font-weight: 700;\n      color: #fff;\n      background-color: #00a657;\n      border-radius: 0.125rem;\n      margin-top: 1em;\n      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);\n      text-decoration: none;\n}\n#app .data {\n    text-align: center;\n    position: fixed;\n    bottom: 150px;\n    right: 10px;\n    width: auto;\n    height: auto;\n    background: #fff;\n}\n#app .legend {\n    position: fixed;\n    top: 70px;\n    left: 10px;\n    width: auto;\n    height: auto;\n    background: #fff;\n    border-radius: 0.5em;\n    padding: 0.5em;\n    text-transform: uppercase;\n    display: block;\n}\n#app .legend .marker-legend {\n      background-color: transparent;\n      border-width: 2px;\n      border-style: solid;\n}\n#app .legend .marker-legend.lob-dsf {\n        border-color: #00a657;\n}\n#app .legend .marker-legend.lob-property-sales {\n        border-color: #af3cf1;\n}\n#app .legend .marker-legend.lob-asset-services {\n        border-color: #00b2dd;\n}\n#app .legend h6 {\n      cursor: pointer;\n      margin: 0.25em 0;\n      border-radius: 0.5em;\n      padding: 0.5em 0.5em 0.75em 0.5em;\n      border-width: 2px;\n      border-style: solid;\n      border-color: transparent;\n}\n#app .legend h6.active:first-child {\n        border-color: #00a657;\n}\n#app .legend h6.active:first-child .marker-legend {\n          background-color: #00a657;\n}\n#app .legend h6.active:nth-child(2) {\n        border-color: #af3cf1;\n}\n#app .legend h6.active:nth-child(2) .marker-legend {\n          background-color: #af3cf1;\n}\n#app .legend h6.active:last-child {\n        border-color: #00b2dd;\n}\n#app .legend h6.active:last-child .marker-legend {\n          background-color: #00b2dd;\n}\n#app .legend .marker-legend {\n      position: relative;\n      top: 3px;\n      margin-right: 1em;\n      display: inline-block;\n      opacity: 1;\n}\n", ""]);
 
 // exports
 
