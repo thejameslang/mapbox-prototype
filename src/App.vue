@@ -738,6 +738,9 @@ export default {
 <style lang="scss">
 #app {
   font-family: sans-serif;
+  h4.popup {
+    text-align: left;
+  }
   #map {
     position: absolute;
     top: 0;
