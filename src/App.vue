@@ -403,7 +403,6 @@ export default {
     timeTravelYear: function(val, oldVal) {
       var elementsToHide = document.getElementsByClassName("year" + oldVal);
       if (!this.playPause) {
-        console.log("clearing last year");
         for (var i in elementsToHide) {
           if (elementsToHide.hasOwnProperty(i)) {
             elementsToHide[i].classList.remove("show-year");
@@ -411,7 +410,6 @@ export default {
         }
       } else {
         if (oldVal === 2017) {
-          console.log("clearing all");
           elementsToHide = document.getElementsByClassName("marker");
           for (var i in elementsToHide) {
             if (elementsToHide.hasOwnProperty(i)) {
