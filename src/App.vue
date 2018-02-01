@@ -109,7 +109,6 @@ export default {
             break;
         }
         if (!marker.properties["propertyType"]) {
-          console.log("there is a snake in my boots");
           el.className += " property-type-unknown";
         }
         switch (marker.properties["propertyType"]) {
@@ -376,9 +375,7 @@ export default {
       });
   },
   mounted() {
-    console.log(this.timeTravelYear);
     var elementsToShow = document.getElementsByClassName("year2003");
-    console.log("year" + this.timeTravelYear);
     for (var i in elementsToShow) {
       if (elementsToShow.hasOwnProperty(i)) {
         elementsToShow[i].classList.add("show-year");
@@ -403,9 +400,19 @@ export default {
     timeTravelYear: function(val, oldVal) {
       var elementsToHide = document.getElementsByClassName("year" + oldVal);
       if (!this.playPause) {
-        for (var i in elementsToHide) {
-          if (elementsToHide.hasOwnProperty(i)) {
-            elementsToHide[i].classList.remove("show-year");
+        for (var y = 1999; y < 2018; y++) {
+          console.log(y);
+          if (y.toString() === val.toString()) {
+            console.log('skip');
+          } else {
+            elementsToHide = document.getElementsByClassName("year" + y.toString());
+            console.log(y);
+            for (var i in elementsToHide) {
+              if (elementsToHide.hasOwnProperty(i)) {
+              // if (elementsToHide[i].classList.contains("show-year")) {
+                elementsToHide[i].classList.remove("show-year");
+              }
+            }
           }
         }
       } else {
