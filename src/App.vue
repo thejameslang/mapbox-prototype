@@ -184,6 +184,18 @@ export default {
           }).setLngLat(marker.geometry.coordinates);
 
           var setHTMLString = "";
+          var propertyTypeSubCodeName = "";
+          var propertyTypeSubCodeValue = "";
+          var dayOfClosingName = "";
+          var dayOfClosingValue = "";
+          var dealValueName = "";
+          var dealValueValue = "";
+          var propertyTypeName = "";
+          var propertyTypeValue = "";
+          var netRentableSqFtName = "";
+          var netRentableSqFtValue = "";
+          var lobName = "";
+          var lobValue = "";
           for (var key in marker.properties) {
             var keyName = "";
             if (marker.properties.hasOwnProperty(key)) {
@@ -192,44 +204,116 @@ export default {
                 keyValue = keyValue.substring(0, 10);
               }
 
+              if (keyValue.toLowerCase() === "null") {
+                keyValue = "";
+              }
+
+              if (marker.properties[key] === "null") {
+                marker.properties[key] = "";
+              }
+
               switch (key) {
                 case "propertyTypeSubCode":
                   keyName = "Property Type Sub Code";
+                  propertyTypeSubCodeName = keyName;
+                  propertyTypeSubCodeValue = keyValue;
                   break;
                 case "dayOfClosing":
                   keyName = "Day Of Closing";
+                  dayOfClosingName = keyName;
+                  dayOfClosingValue = keyValue;
                   break;
                 case "dealValue":
                   keyName = "Deal Value";
-                  keyValue = "$" + keyValue;
+                  if (keyValue === "") {
+                    keyValue = "";
+                  } else {
+                    keyValue = "$" + Number(keyValue).toLocaleString();
+                  }
+                  dealValueName = keyName;
+                  dealValueValue = keyValue;
                   break;
                 case "propertyType":
                   keyName = "Property Type";
+                  propertyTypeName = keyName;
+                  propertyTypeValue = keyValue;
                   break;
                 case "netRentableSqFt":
                   keyName = "Net Rentable Square Feet";
                   this.squareFootage = keyValue;
-                  console.log(this.squareFootage);
+                  netRentableSqFtName = keyName;
+                  netRentableSqFtValue = keyValue;
                   break;
                 case "lob":
                   keyName = "Line Of Business";
+                  lobName = keyName;
+                  if (keyValue === "AS") {
+                    keyValue = "Asset Services";
+                  }
+                  lobValue = keyValue;
                   break;
               }
-
-              if (
-                marker.properties[key] != "null" &&
-                marker.properties[key] != ""
-              ) {
-                setHTMLString +=
-                  "<h4 class='popup'>" +
-                  "<span class='property-detail-key'>" +
-                  keyName +
-                  "</span>" +
-                  ": " +
-                  keyValue +
-                  "</h4> ";
-              }
             }
+          }
+          if (lobValue != "") {
+            setHTMLString +=
+              "<h4 class='popup'>" +
+              "<span class='property-detail-key'>" +
+              lobName +
+              "</span>" +
+              ": " +
+              lobValue +
+              "</h4> ";
+          }
+          if (propertyTypeValue != "") {
+            setHTMLString +=
+              "<h4 class='popup'>" +
+              "<span class='property-detail-key'>" +
+              propertyTypeName +
+              "</span>" +
+              ": " +
+              propertyTypeValue +
+              "</h4> ";
+          }
+          if (propertyTypeSubCodeValue != "") {
+            setHTMLString +=
+              "<h4 class='popup'>" +
+              "<span class='property-detail-key'>" +
+              propertyTypeSubCodeName +
+              "</span>" +
+              ": " +
+              propertyTypeSubCodeValue +
+              "</h4> ";
+          }
+          if (dealValueValue != "") {
+            setHTMLString +=
+              "<h4 class='popup'>" +
+              "<span class='property-detail-key'>" +
+              dealValueName +
+              "</span>" +
+              ": " +
+              dealValueValue +
+              "</h4> ";
+          }
+          if (dayOfClosingValue != "") {
+            setHTMLString +=
+              "<h4 class='popup'>" +
+              "<span class='property-detail-key'>" +
+              dayOfClosingName +
+              "</span>" +
+              ": " +
+              dayOfClosingValue +
+              "</h4> ";
+          }
+          if (netRentableSqFtValue != "") {
+            setHTMLString +=
+              "<h4 class='popup'>" +
+              "<span class='property-detail-key'>" +
+              netRentableSqFtName +
+              "</span>" +
+              ": " +
+              netRentableSqFtValue +
+              "</h4> ";
           }
           popup.setHTML(setHTMLString).addTo(map);
         });
@@ -713,23 +797,23 @@ export default {
       }
     },
     squareFootage: function(newValue, oldValue) {
-      var vm = this
-      function animate () {
+      var vm = this;
+      function animate() {
         if (TWEEN.update()) {
-        console.log(this.animatedSquareFootage);
-          requestAnimationFrame(animate)
+          console.log(this.animatedSquareFootage);
+          requestAnimationFrame(animate);
         }
       }
 
       new TWEEN.Tween({ tweeningNumber: oldValue })
         .easing(TWEEN.Easing.Quadratic.Out)
         .to({ tweeningNumber: newValue }, 500)
-        .onUpdate(function () {
-          vm.animatedSquareFootage = this.tweeningNumber.toFixed(0)
+        .onUpdate(function() {
+          vm.animatedSquareFootage = this.tweeningNumber.toFixed(0);
         })
-        .start()
+        .start();
 
-      animate()
+      animate();
     }
   }
 };
@@ -876,7 +960,7 @@ export default {
     right: 10px;
     width: auto;
     height: auto;
-    background: #FFF;
+    background: #fff;
   }
   .legend {
     position: fixed;
