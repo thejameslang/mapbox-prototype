@@ -874,7 +874,8 @@ export default {
 
   .marker,
   .marker-legend {
-    opacity: 0;
+    // opacity: 0;
+    display: none;
     border: none;
     cursor: pointer;
     height: 15px;
@@ -895,6 +896,8 @@ export default {
     }
   }
   .show-year {
+    // opacity: 0.5;
+    display: block;
     opacity: 0.5;
   }
   .popup {
